@@ -40,13 +40,29 @@ class Game {
 //class for all items in the Game
 class GameItem {
     constructor() {
-        this.width = null;
+        this.width  = null;
         this.height = null;
-        this.PosX = null;
-        this.PosY = null;
+        this.posX   = null;
+        this.posY   = null;
 
-        //player, foe, bullet,....
-        this.myClass = null;
+        //player, enemy, bullet,....
+        this.itemClass  = null;
+        this.domElement = this.createDomElement();
+    }
+
+    createDomElement(){
+        let newDomElm = document.createElement("div");
+
+        newDomElm.className    = this.itemClass;
+
+        newDomElm.style.width  = this.width  + "vw";
+        newDomElm.style.height = this.height + "vh";
+        newDomElm.style.left   = this.posX   + "vw";
+        newDomElm.style.bottom = this.posY   + "vh";
+
+        document.getElementById("gamefield").appendChild(newDomElm);
+
+        return newDomElm;
     }
 
     moveUp(){
@@ -74,6 +90,9 @@ class GameItem {
         }
     }
 }
+
+
+
 
 //the player
 class Player extends GameItem {}
