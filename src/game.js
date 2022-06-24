@@ -39,14 +39,14 @@ class Game {
 
 //class for all items in the Game
 class GameItem {
-    constructor() {
-        this.width  = null;
-        this.height = null;
-        this.posX   = null;
-        this.posY   = null;
+    constructor(width, height, posX, posY, className) {
+        this.width  = width;
+        this.height = height;
+        this.posX   = posX;
+        this.posY   = posY;
 
         //player, enemy, bullet,....
-        this.itemClass  = null;
+        this.itemClass  = className;
         this.domElement = this.createDomElement();
     }
 
@@ -91,14 +91,21 @@ class GameItem {
     }
 }
 
-
-
-
 //the player
-class Player extends GameItem {}
+class Player extends GameItem {
+    constructor(width=5, height=5, posX=50-width/2,posY=0,className="player"){
+        //use default values to be more even generic...
+        super(width, height, posX, posY, className);
+    }
+}
 
 //the Enemy's
-class Enemy extends GameItem {}
+class Enemy extends GameItem {
+    constructor(width=5, height=5, posX=Math.floor(Math.random() * (100 - width + 1)),posY=0,className="enemy"){
+        //use default values to be more even generic...
+        super(width, height, posX, posY, className);
+    }
+}
 
 
 
