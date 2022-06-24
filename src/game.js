@@ -38,7 +38,42 @@ class Game {
 }
 
 //class for all items in the Game
-class GameItem {}
+class GameItem {
+    constructor() {
+        this.width = null;
+        this.height = null;
+        this.PosX = null;
+        this.PosY = null;
+
+        //player, foe, bullet,....
+        this.myClass = null;
+    }
+
+    moveUp(){
+        if(this.positionY +this.height < 100){
+            this.positionY++;
+            this.domElement.style.bottom = this.posY + "vh";
+        }
+    }
+    moveRight(){
+        if(this.positionX + this.width < 100){
+        this.positionX++;
+        this.domElement.style.left = this.posX + "vw";
+        }  
+    }
+    moveDown(){
+        if(this.positionY > 0){
+        this.positionY--;
+        this.domElement.style.bottom = this.posY + "vh";
+        }
+    }
+    moveLeft(){
+        if(this.positionX > 0){
+        this.positionX--;
+        this.domElement.style.left = this.posX + "vw";
+        }
+    }
+}
 
 //the player
 class Player extends GameItem {}
