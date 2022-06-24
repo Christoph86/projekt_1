@@ -21,7 +21,8 @@ class Game {
         this.player = new Player();
         this.addEventListeners();
 
-        refreshRate(() => { //get attr from possible startmenue(easy,med, hard...)
+        //use as refresh rate
+        setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
             // create/add new Enemy@ every 60 iterations
             if(this.counter % 60 === 0){
                 const newEnemy = new Enemy();
