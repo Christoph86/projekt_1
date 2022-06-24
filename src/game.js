@@ -93,7 +93,7 @@ class GameItem {
 
 //the player
 class Player extends GameItem {
-    constructor(width=5, height=5, posX=50-width/2,posY=0,className="player"){
+    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){
         //use default values to be more even generic...
         super(width, height, posX, posY, className);
     }
@@ -101,7 +101,7 @@ class Player extends GameItem {
 
 //the Enemy's
 class Enemy extends GameItem {
-    constructor(width=5, height=5, posX=Math.floor(Math.random() * (100 - width + 1)),posY=0,className="enemy"){
+    constructor(width=5, height=5, posX=Math.floor(Math.random() * (100 - width + 1)), posY = 100 + this.height, className="enemy"){
         //use default values to be more even generic...
         super(width, height, posX, posY, className);
     }
