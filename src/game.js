@@ -3,10 +3,10 @@
 //the game
 class Game {
     constructor() {
-
         this.player = null; // Player
-        this.EnemyArr = []; // all Enemys
-
+        this.enemyArr = []; // all Enemys
+        //helper to iterate with less timers
+        this.counter = 0;
         //non MVP:
         //these would have an different behauvior then the Enemys so i keep them seperated now
         // this.BulletArr = [];
@@ -14,23 +14,40 @@ class Game {
         // this.backgroundItemArr = [];
         // image in the Background that would scroll down, repeat itself
         //this.scrollBackgroundImg = null;
-
-        //helper to iterate with less timers
-        this.counter = 0;
     }
 
     //non MVP: give attribuetes, like for level easy, med, hard -->diff speed, amount of enemys
-    startGame(){}
+    startGame(){
+        this.player = new Player();
+        this.addEventListeners();
+
+        refreshRate(() => { //get attr from possible startmenue(easy,med, hard...)
+            // create/add new Enemy@ every 60 iterations
+            if(this.counter % 60 === 0){
+                const newEnemy = new Enemy();
+                this.enemyArr.push(newEnemy);
+            }
+
+            // move Enemys, remove Enemys out of Viewport
+            this.enemyArr.forEach((enemyInstance) => {
+                enemyInstance.moveDown();
+                // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
+                if( (enemyInstance.posY + enemyInstance.height) === 0){
+                    this.enemyArr.shift();
+                    enemyInstance.domElement.remove();
+                }
+            });
+            this.counter++;
+        }, 30);
+    }
 
     addEventListeners(){
         document.addEventListener("keydown", (event) => {
             //is it a good practice to order clockwise like in shorthands???
             if     (event.key === "ArrowUp")    this.player.moveUp();
             else if(event.key === "ArrowRight") this.player.moveRight();
-            else if(event.key === "ArrowDown")  this.player.moveUp();
-            else if(event.key === "ArrowLeft")  this.player.moveDown();
-                                                    //add moveXY to GameItem class!
-
+            else if(event.key === "ArrowDown")  this.player.moveDown();
+            else if(event.key === "ArrowLeft")  this.player.moveLeft();
             // else if(event.key  === "Escape")  console.log("will quite/restart the Game");
             // else if(event.key  === "Space")  console.log("will pause the game");
         });
@@ -39,14 +56,14 @@ class Game {
 
 //class for all items in the Game
 class GameItem {
-    constructor(width, height, posX, posY, className) {
+    constructor(width, height, posX, posY, itemClass) {
         this.width  = width;
         this.height = height;
         this.posX   = posX;
         this.posY   = posY;
 
-        //player, enemy, bullet,....
-        this.itemClass  = className;
+        //itemClass: player, enemy, bullet,....
+        this.itemClass  = itemClass;
         this.domElement = this.createDomElement();
     }
 
@@ -61,31 +78,30 @@ class GameItem {
         newDomElm.style.bottom = this.posY   + "vh";
 
         document.getElementById("gamefield").appendChild(newDomElm);
-
         return newDomElm;
     }
 
     moveUp(){
-        if(this.positionY +this.height < 100){
-            this.positionY++;
-            this.domElement.style.bottom = this.posY + "vh";
+        if(this.posY +this.height < 100){
+        this.posY++;
+        this.domElement.style.bottom = this.posY + "vh";
         }
     }
     moveRight(){
-        if(this.positionX + this.width < 100){
-        this.positionX++;
+        if(this.posX + this.width < 100){
+        this.posX++;
         this.domElement.style.left = this.posX + "vw";
         }  
     }
     moveDown(){
-        if(this.positionY > 0){
-        this.positionY--;
+        if(this.posY > 0){
+        this.posY--;
         this.domElement.style.bottom = this.posY + "vh";
         }
     }
     moveLeft(){
-        if(this.positionX > 0){
-        this.positionX--;
+        if(this.posX > 0){
+        this.posX--;
         this.domElement.style.left = this.posX + "vw";
         }
     }
@@ -93,21 +109,20 @@ class GameItem {
 
 //the player
 class Player extends GameItem {
-    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){
-        //use default values to be more even generic...
+    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){       
         super(width, height, posX, posY, className);
     }
 }
 
 //the Enemy's
 class Enemy extends GameItem {
-    constructor(width=5, height=5, posX=Math.floor(Math.random() * (100 - width + 1)), posY = 100 + this.height, className="enemy"){
-        //use default values to be more even generic...
+    constructor(width = 5,height = 5, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 95, className="enemy"){
         super(width, height, posX, posY, className);
     }
 }
 
-
+const game = new Game();
+game.startGame();
 
 
 

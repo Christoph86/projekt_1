@@ -1,0 +1,28 @@
+body {
+    background-color: red;
+}
+
+#gamefield {
+    width: 100vw;
+    height: 100vh;
+    background-color: lightgray;
+    position: relative;
+    overflow: hidden;
+    /* -->remove possible scrollbars by hand */
+}
+
+.player {
+    background-color: green;
+    position: absolute;
+}
+
+.enemy {
+    background-color: red;
+    position: absolute;
+}
+
+/* bullet div/.png's wouls be very small so add border for dev */
+/* .bullet {
+    background-color: blue;
+    border: 3px solid black;
+} */
