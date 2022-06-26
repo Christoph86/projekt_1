@@ -5,11 +5,11 @@ class Game {
     constructor() {
         this.player = null; // Player
         this.enemyArr = []; // all Enemys
+        this.bulletArr = null; // all Bullets shoot from Player -get ref from player instance
         //helper to iterate with less timers
         this.counter = 0;
         //non MVP:
         //these would have an different behauvior then the Enemys so i keep them seperated now
-        // this.BulletArr = [];
         // this.massiveItemArr = [];
         // this.backgroundItemArr = [];
         // image in the Background that would scroll down, repeat itself
@@ -19,6 +19,8 @@ class Game {
     //non MVP: give attribuetes, like for level easy, med, hard -->diff speed, amount of enemys
     startGame(){
         this.player = new Player();
+        //connect bulletArr ref of game with the one from player
+        this.bulletArr = this.player.bulletArr;
         this.addEventListeners();
 
         //use as refresh rate
@@ -38,6 +40,16 @@ class Game {
                     enemyInstance.domElement.remove();
                 }
             });
+
+            this.bulletArr.forEach((bulletInstance) => {
+                bulletInstance.moveUp();
+                if( (bulletInstance.posY + bulletInstance.height) === 100){
+                    this.bulletArr.shift();
+                    bulletInstance.domElement.remove();
+                }
+            });
+
+
 
             this.collisionBetweenGameItems([this.player], this.enemyArr)
 
@@ -131,6 +143,7 @@ class GameItem {
 class Player extends GameItem {
     constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){       
         super(width, height, posX, posY, className);
+    this.bulletArr = []
     }
 
     //overwrites moveDown() of GameItem class,
@@ -143,7 +156,8 @@ class Player extends GameItem {
     }
 
     shoot() {
-        new Bullet(1, 1, (this.posX+this.width/2), (this.posY+this.height), "bullet")
+        const newBullet = new Bullet(1, 1, (this.posX+this.width/2), (this.posY+this.height), "bullet");
+        this.bulletArr.push(newBullet);
         console.log("shoting!!!");
     }
 }
