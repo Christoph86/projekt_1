@@ -6,11 +6,9 @@ class Game {
         
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
+        this.backgroundMassiveItemArr = [];
         //helper to iterate with less timers
         this.counter = 0;
-
-        // this.massiveItemArr = [];
-
     }
 
     //non MVP: give attribuetes, like for level easy, med, hard -->diff speed, amount of enemys
@@ -20,7 +18,6 @@ class Game {
         this.bulletArr = this.player.bulletArr;
         //need a instance to use .height for counter to create further slices/rows by timer
         //will fix itself even if you use an other height in the interfal(), when this [0]
-        //will removed
         this.movingBackgroundArr.push(new movingBackground());
 
         this.addEventListeners();
@@ -38,15 +35,21 @@ class Game {
                 this.backgroundItemArr.push(newBackgroundItem);
             }
 
+            if(this.counter % 50 === 0){
+                const newBackgroundMassiveItem = new BackgroundMassiveItem();
+                this.backgroundMassiveItemArr.push(newBackgroundMassiveItem);
+            }
+
             //add new background sclice one by one when fully in viewport
             if(this.counter % this.movingBackgroundArr[0].height === 0){
                 const newMovingBackGroundRow = new movingBackground();
                 this.movingBackgroundArr.push(newMovingBackGroundRow);
             }
 
+            //need function for all forEach with (type, condition)
+            //add method to reuse like removeOnLeaveViewport() -opt: up,down,upDown,leftRigh to remove all Elm@outside condition
             this.movingBackgroundArr.forEach((movingBackgroundInstance) => {
                 movingBackgroundInstance.moveDown();
-                // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
                 if( (movingBackgroundInstance.posY + movingBackgroundInstance.height) === 0){
                     this.movingBackgroundArr.shift();
                     movingBackgroundInstance.domElement.remove();
@@ -60,11 +63,16 @@ class Game {
                     this.backgroundItemArr.shift();
                     backgroundItemInstance.domElement.remove();
                 }
-            });            
+            });       
+            
+            this.backgroundMassiveItemArr.forEach((backgroundMassiveItemInstance) => {
+                backgroundMassiveItemInstance.moveDown();
+                if( (backgroundMassiveItemInstance.posY + backgroundMassiveItemInstance.height) === 0){
+                    this.backgroundMassiveItemArr.shift();
+                    backgroundMassiveItemInstance.domElement.remove();
+                }
+            });  
 
-            // move Enemys, remove Enemys out of Viewport
-            // later: add method to reuse like removeOnLeaveViewport() -opt: up,down,upDown,leftRight ????
-            // maybe enemys also will go diagonal...
             this.enemyArr.forEach((enemyInstance) => {
                 enemyInstance.moveDown();
                 // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
@@ -81,7 +89,6 @@ class Game {
                     bulletInstance.domElement.remove();
                 }
             });
-
 
 
             //remove enemy when hits player
@@ -180,7 +187,6 @@ class GameItem {
     }
 }
 
-//the player
 class Player extends GameItem {
     constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){       
         super(width, height, posX, posY, className);
@@ -203,7 +209,6 @@ class Player extends GameItem {
     }
 }
 
-//the Enemy's
 class Enemy extends GameItem {
     constructor(width = 5,height = 5, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 100, className="enemy"){
         super(width, height, posX, posY, className);
@@ -231,6 +236,12 @@ class BackgroundItem extends GameItem {
     }
 }
 
+class BackgroundMassiveItem extends GameItem {
+    constructor(width=15, height=15, posX= Math.floor(Math.random() * (100 - width + 1)), posY=100, className="backgroundMassiveItem"){
+        super(width, height, posX, posY, className);
+    }
+}
+
 
 const game = new Game();
 game.startGame();
@@ -238,17 +249,15 @@ game.startGame();
 
 // for later: non MVP
 // bug: enemys removes multiple bullets,
-// some of these don't roun outside viewport, remains
-
+// some of these don't run outside viewport, remains
+//
 //add linear transition@refreshrate to movements
 //
 //player goes with the background! more intense playing exp
+//set start of player at least @posY25 for this
 //
-// health points for player
-// highscore, increased by time + shot enemy, get bonusItem
-
-// massiveItems//that will block the players movement
-// class massiveItem {}
-
-// //a item just to dekorate the scrolling background
-// class backgroundItem {}
+// health points for player, highscore, increased by time +inc@ shot enemy, get bonusItem
+//
+// class MassiveItems//that will block the players movement
+//
+//avoid items created on the same x-pos-range(ofElm.width) 
