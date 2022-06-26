@@ -5,11 +5,12 @@ class Game {
         this.bulletArr = null; // all Bullets shoot from Player -get ref from player instance
         
         this.movingBackgroundArr = [];
+        this.backgroundItemArr = [];
         //helper to iterate with less timers
         this.counter = 0;
 
         // this.massiveItemArr = [];
-        // this.dekoItemsArr = [];
+
     }
 
     //non MVP: give attribuetes, like for level easy, med, hard -->diff speed, amount of enemys
@@ -32,6 +33,11 @@ class Game {
                 this.enemyArr.push(newEnemy);
             }
 
+            if(this.counter % 50 === 0){
+                const newBackgroundItem = new BackgroundItem();
+                this.backgroundItemArr.push(newBackgroundItem);
+            }
+
             //add new background sclice one by one when fully in viewport
             if(this.counter % this.movingBackgroundArr[0].height === 0){
                 const newMovingBackGroundRow = new movingBackground();
@@ -46,6 +52,15 @@ class Game {
                     movingBackgroundInstance.domElement.remove();
                 }
             });
+
+            this.backgroundItemArr.forEach((backgroundItemInstance) => {
+                backgroundItemInstance.moveDown();
+                // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
+                if( (backgroundItemInstance.posY + backgroundItemInstance.height) === 0){
+                    this.backgroundItemArr.shift();
+                    backgroundItemInstance.domElement.remove();
+                }
+            });            
 
             // move Enemys, remove Enemys out of Viewport
             // later: add method to reuse like removeOnLeaveViewport() -opt: up,down,upDown,leftRight ????
@@ -210,12 +225,22 @@ class movingBackground extends GameItem {
     }
 }
 
+class BackgroundItem extends GameItem {
+    constructor(width=15, height=15, posX= Math.floor(Math.random() * (100 - width + 1)), posY=100, className="backgroundItem"){
+        super(width, height, posX, posY, className);
+    }
+}
+
 
 const game = new Game();
 game.startGame();
 
 
 // for later: non MVP
+// bug: enemys removes multiple bullets,
+// some of these don't roun outside viewport, remains
+
+//add linear transition@refreshrate to movements
 //
 //player goes with the background! more intense playing exp
 //
