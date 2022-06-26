@@ -65,12 +65,12 @@ class Game {
     addEventListeners(){
         document.addEventListener("keydown", (event) => {
             //is it a good practice to order clockwise like in shorthands???
-            if     (event.key === "ArrowUp")    this.player.moveUp();
+            if     (event.key === "ArrowUp"   ) this.player.moveUp();
             else if(event.key === "ArrowRight") this.player.moveRight();
-            else if(event.key === "ArrowDown")  this.player.moveDown();
-            else if(event.key === "ArrowLeft")  this.player.moveLeft();
-            // else if(event.key  === "Escape")  console.log("will quite/restart the Game");
-            // else if(event.key  === "Space")  console.log("will pause the game");
+            else if(event.key === "ArrowDown" ) this.player.moveDown();
+            else if(event.key === "ArrowLeft" ) this.player.moveLeft();
+            else if(event.key === "s"         ) this.player.shoot(); //look@problems with "Space" key, choose other key
+            // else if(event.key  === "Escape")  console.log("will pause+ option to quite/restart the Game");
         });
     }
 }
@@ -142,12 +142,23 @@ class Player extends GameItem {
         }
     }
 
-    shoot() {}
+    shoot() {
+        new Bullet(1, 1, (this.posX+this.width/2), (this.posY+this.height), "bullet")
+        console.log("shoting!!!");
+    }
 }
 
 //the Enemy's
 class Enemy extends GameItem {
     constructor(width = 5,height = 5, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 100, className="enemy"){
+        super(width, height, posX, posY, className);
+    }
+}
+
+class Bullet extends GameItem {
+    constructor(width=1, height=1, posX=null, posY=null, className="bullet"){
+        //need position from player,... maybe a way to call player as parent?? -later
+        //think won't exist till constructor not finished, try with dom-selector for player
         super(width, height, posX, posY, className);
     }
 }
