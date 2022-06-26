@@ -49,17 +49,18 @@ class Game {
                 }
             });
 
-
-
-            this.collisionBetweenGameItems([this.player], this.enemyArr)
+            //remove enemy when hits player
+            this.deleteAtCollisionOfGameItems([this.player],  this.enemyArr, "second")
+            //remove bullet and enemy when collide
+            this.deleteAtCollisionOfGameItems(this.bulletArr, this.enemyArr, "both")
 
             this.counter++;
         }, 30);
 
 
     }
-
-    collisionBetweenGameItems(firstItemsArr, secondItemsArr){
+    //
+    deleteAtCollisionOfGameItems(firstItemsArr, secondItemsArr, deleteWich="none"){
         firstItemsArr.forEach((firstItem)=>{
             secondItemsArr.forEach((secondItem)=> {
 
@@ -68,7 +69,12 @@ class Game {
                     firstItem.posY < secondItem.posY + secondItem.height &&
                     firstItem.height + firstItem.posY > secondItem.posY){
                 
+                if      (deleteWich === "first")  firstItem.domElement.remove()
+                else if (deleteWich === "second") secondItem.domElement.remove()
+                else if (deleteWich === "both")  {firstItem.domElement.remove(); secondItem.domElement.remove();}
+                //else if (deleteWich === "none" {}
                 console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
+                //return [firstItem.domElement, secondItem.domElement]; maybe for later??
                 }
             })
         }) 
