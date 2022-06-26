@@ -38,9 +38,29 @@ class Game {
                     enemyInstance.domElement.remove();
                 }
             });
+
+            this.collisionBetweenGameItems([this.player], this.enemyArr)
+
             this.counter++;
         }, 30);
+
+
     }
+
+    collisionBetweenGameItems(firstItemsArr, secondItemsArr){
+        firstItemsArr.forEach((firstItem)=>{
+            secondItemsArr.forEach((secondItem)=> {
+
+                if(firstItem.posX < secondItem.posX + secondItem.width &&
+                    firstItem.posX + firstItem.width > secondItem.posX &&
+                    firstItem.posY < secondItem.posY + secondItem.height &&
+                    firstItem.height + firstItem.posY > secondItem.posY){
+                
+                console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
+                }
+            })
+        }) 
+    };
 
     addEventListeners(){
         document.addEventListener("keydown", (event) => {
@@ -95,10 +115,9 @@ class GameItem {
         }  
     }
     moveDown(){
-        if(this.posY > 0){
+        //free to get outside viewpoport
         this.posY--;
         this.domElement.style.bottom = this.posY + "vh";
-        }
     }
     moveLeft(){
         if(this.posX > 0){
@@ -113,11 +132,22 @@ class Player extends GameItem {
     constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){       
         super(width, height, posX, posY, className);
     }
+
+    //overwrites moveDown() of GameItem class,
+    //add condition so the playery can't go outside viewport
+    moveDown(){ 
+    if(this.posY > 0){
+        this.posY--;
+        this.domElement.style.bottom = this.posY + "vh";
+        }
+    }
+
+    shoot() {}
 }
 
 //the Enemy's
 class Enemy extends GameItem {
-    constructor(width = 5,height = 5, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 95, className="enemy"){
+    constructor(width = 5,height = 5, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 100, className="enemy"){
         super(width, height, posX, posY, className);
     }
 }
