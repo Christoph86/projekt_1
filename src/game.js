@@ -1,19 +1,15 @@
-//MVP:
-
-//the game
 class Game {
     constructor() {
         this.player = null; // Player
         this.enemyArr = []; // all Enemys
         this.bulletArr = null; // all Bullets shoot from Player -get ref from player instance
+        
+        this.movingBackgroundArr = [];
         //helper to iterate with less timers
         this.counter = 0;
-        //non MVP:
-        //these would have an different behauvior then the Enemys so i keep them seperated now
+
         // this.massiveItemArr = [];
-        // this.backgroundItemArr = [];
-        // image in the Background that would scroll down, repeat itself
-        //this.scrollBackgroundImg = null;
+        // this.dekoItemsArr = [];
     }
 
     //non MVP: give attribuetes, like for level easy, med, hard -->diff speed, amount of enemys
@@ -21,9 +17,14 @@ class Game {
         this.player = new Player();
         //connect bulletArr ref of game with the one from player
         this.bulletArr = this.player.bulletArr;
+        //need a instance to use .height for counter to create further slices/rows by timer
+        //will fix itself even if you use an other height in the interfal(), when this [0]
+        //will removed
+        this.movingBackgroundArr.push(new movingBackground());
+
         this.addEventListeners();
 
-        //use as refresh rate
+        //use as refresh rate -set as attribute for easy,med,hard +multiplier for amount of enemys, massiveItems
         setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
             // create/add new Enemy@ every 60 iterations
             if(this.counter % 60 === 0){
@@ -31,7 +32,24 @@ class Game {
                 this.enemyArr.push(newEnemy);
             }
 
+            //add new background sclice one by one when fully in viewport
+            if(this.counter % this.movingBackgroundArr[0].height === 0){
+                const newMovingBackGroundRow = new movingBackground();
+                this.movingBackgroundArr.push(newMovingBackGroundRow);
+            }
+
+            this.movingBackgroundArr.forEach((movingBackgroundInstance) => {
+                movingBackgroundInstance.moveDown();
+                // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
+                if( (movingBackgroundInstance.posY + movingBackgroundInstance.height) === 0){
+                    this.movingBackgroundArr.shift();
+                    movingBackgroundInstance.domElement.remove();
+                }
+            });
+
             // move Enemys, remove Enemys out of Viewport
+            // later: add method to reuse like removeOnLeaveViewport() -opt: up,down,upDown,leftRight ????
+            // maybe enemys also will go diagonal...
             this.enemyArr.forEach((enemyInstance) => {
                 enemyInstance.moveDown();
                 // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
@@ -48,6 +66,8 @@ class Game {
                     bulletInstance.domElement.remove();
                 }
             });
+
+
 
             //remove enemy when hits player
             this.deleteAtCollisionOfGameItems([this.player],  this.enemyArr, "second")
@@ -183,26 +203,27 @@ class Bullet extends GameItem {
     }
 }
 
+class movingBackground extends GameItem {
+    constructor(width=100, height=20, posX=0, posY=100, className="movingBackground"){
+        //--> will need to fill whole backgrouind before start!
+        super(width, height, posX, posY, className);
+    }
+}
+
+
 const game = new Game();
 game.startGame();
 
 
-
-
-
 // for later: non MVP
 //
-// class Bullet extends GameItem {}
-// //player (or maybe foes) shoting that will remove elements on collision
-// //(or decrease health later)
+//player goes with the background! more intense playing exp
+//
+// health points for player
+// highscore, increased by time + shot enemy, get bonusItem
 
-// //a item scrolling down with the background at same speed
-// //that will block the players movement
+// massiveItems//that will block the players movement
 // class massiveItem {}
 
 // //a item just to dekorate the scrolling background
 // class backgroundItem {}
-
-//extra non MVP:
-// maybe healthpoint, weapon, points for Highscore(also non MVP)... this kind
-// class BonusItem {}
