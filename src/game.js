@@ -191,9 +191,10 @@ class GameItem {
 }
 
 class Player extends GameItem {
-    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player"){       
+    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player", healthPoints=100){       
         super(width, height, posX, posY, className);
-    this.bulletArr = []
+    this.bulletArr = [];
+    this.healthPoints = healthPoints;
     }
 
     moveUp() {
