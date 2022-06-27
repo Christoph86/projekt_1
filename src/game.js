@@ -52,9 +52,8 @@ class Game {
             this.removeOnLeaveViewport(this.enemyArr,                 "down");
             this.removeOnLeaveViewport(this.bulletArr,                "up"  );
 
-
-            //remove enemy when hits player
-            this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")
+            //remove enemy when hits player& decrease players HP by 5
+            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -=5;}
             //remove bullet and enemy when collide
             this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")
             //block player to go further an MassiveItem (push player down with/before the item)
@@ -67,6 +66,9 @@ class Game {
     }
 
     handleCollisionOfGameItems(firstItemsArr, secondItemsArr, task="none"){
+        let resultOfCollision = false;
+        //however need a helping var,... maybe because of the scope in the forEach...
+        //but why a return in the nested for Each don't worked?? maybe killed just the nested loop... 
         firstItemsArr.forEach((firstItem, firstItemIndex)=>{
             secondItemsArr.forEach((secondItem, secondItemIndex)=> {
 
@@ -84,15 +86,16 @@ class Game {
                     secondItemsArr.splice(secondItemIndex,1);
                 }
                 else if (task === "block")    {firstItem.moveDown();}
+
+                
                 firstItem.collisionWith  = secondItem;
                 secondItem.collisionWith = firstItem;
                 console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
-                //return [firstItem.domElement, secondItem.domElement]; maybe for later??
+                resultOfCollision = [firstItem, secondItem];
                 } else {//no collision detected
+                        resultOfCollision = false
                         // iteration 1 --> a1 hits b1 !! next iteration: a1 !hits b2 so a1.collisionWith would be "" even it may still in contact with b1
                         // so i check eachother if both elements are a pair and only then set ""
-
-                        //remember as it was without collisionWith, to maybe make semiMassiveItems the player can "jump/go thru" over
                         if(firstItem.collisionWith === secondItem && secondItem.collisionWith === firstItem){
                             firstItem.collisionWith  = "";
                             secondItem.collisionWith = "";
@@ -100,6 +103,7 @@ class Game {
                 }
             })
         }) 
+        return resultOfCollision;
     };
 
     removeOnLeaveViewport(gameItemArr, movementDirection){
@@ -256,8 +260,7 @@ class BackgroundMassiveItem extends GameItem {
 const game = new Game();
 game.startGame();
 
-// first: add gameOver!/player died
-// dec HP if hits enemy
+// first: add gameOver!/player died (HP now decreasing by enemy)
 // later: dec HP if pushed below bottom by massiveItem
 
 // for later: non MVP
@@ -273,3 +276,5 @@ game.startGame();
 //-health points for player, highscore, increased by time +inc@ shot enemy, get bonusItem
 //
 //-avoid items created on the same x-pos-range(ofElm.width) 
+
+//remember as it was without collisionWith, to maybe make semiMassiveItems the player can "jump/go thru" over
