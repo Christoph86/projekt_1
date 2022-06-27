@@ -35,7 +35,7 @@ class Game {
                 this.backgroundItemArr.push(newBackgroundItem);
             }
 
-            if(this.counter % 50 === 0){
+            if(this.counter % 40 === 0){
                 const newBackgroundMassiveItem = new BackgroundMassiveItem();
                 this.backgroundMassiveItemArr.push(newBackgroundMassiveItem);
             }
@@ -46,49 +46,16 @@ class Game {
                 this.movingBackgroundArr.push(newMovingBackGroundRow);
             }
 
-            //need function for all forEach with (type, condition)
-            //add method to reuse like removeOnLeaveViewport() -opt: up,down,upDown,leftRigh to remove all Elm@outside condition
-            this.movingBackgroundArr.forEach((movingBackgroundInstance) => {
-                movingBackgroundInstance.moveDown();
-                if( (movingBackgroundInstance.posY + movingBackgroundInstance.height) === 0){
-                    this.movingBackgroundArr.shift();
-                    movingBackgroundInstance.domElement.remove();
-                }
-            });
-
-            this.backgroundItemArr.forEach((backgroundItemInstance) => {
-                backgroundItemInstance.moveDown();
-                // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
-                if( (backgroundItemInstance.posY + backgroundItemInstance.height) === 0){
-                    this.backgroundItemArr.shift();
-                    backgroundItemInstance.domElement.remove();
-                }
-            });       
-            
-            this.backgroundMassiveItemArr.forEach((backgroundMassiveItemInstance) => {
-                backgroundMassiveItemInstance.moveDown();
-                if( (backgroundMassiveItemInstance.posY + backgroundMassiveItemInstance.height) === 0){
-                    this.backgroundMassiveItemArr.shift();
-                    backgroundMassiveItemInstance.domElement.remove();
-                }
-            });  
-
-            this.enemyArr.forEach((enemyInstance) => {
-                enemyInstance.moveDown();
-                // remove Enemys out of the Viewport, from Arr& Dom@instance of iteration (when the're complete out of sight)
-                if( (enemyInstance.posY + enemyInstance.height) === 0){
-                    this.enemyArr.shift();
-                    enemyInstance.domElement.remove();
-                }
-            });
-
-            this.bulletArr.forEach((bulletInstance) => {
-                bulletInstance.moveUp();
-                if( (bulletInstance.posY + bulletInstance.height) === 100){
-                    this.bulletArr.shift();
-                    bulletInstance.domElement.remove();
-                }
-            });
+            //remove "moving" background    @going "down" out viewport
+            this.removeOnLeaveViewport(this.movingBackgroundArr, "down");
+            //remove backgroundItems        @going "down" out viewport
+            this.removeOnLeaveViewport(this.backgroundItemArr, "down");
+            //remove backgroundMassiveItems @going "down" out viewport
+            this.removeOnLeaveViewport(this.backgroundMassiveItemArr, "down");
+            //remove enemys                 @going "down" out viewport
+            this.removeOnLeaveViewport(this.enemyArr, "down");
+            //remove Bulllets               @going "up" out viewporst
+            this.removeOnLeaveViewport(this.bulletArr, "up");
 
 
             //remove enemy when hits player
@@ -97,23 +64,21 @@ class Game {
             this.deleteAtCollisionOfGameItems(this.bulletArr, this.enemyArr, "both")
 
             this.counter++;
-        }, 30);
-
-
+        }, 40);
     }
-    //
+
     deleteAtCollisionOfGameItems(firstItemsArr, secondItemsArr, deleteWich="none"){
         firstItemsArr.forEach((firstItem)=>{
             secondItemsArr.forEach((secondItem)=> {
 
-                if(firstItem.posX < secondItem.posX + secondItem.width &&
-                    firstItem.posX + firstItem.width > secondItem.posX &&
-                    firstItem.posY < secondItem.posY + secondItem.height &&
-                    firstItem.height + firstItem.posY > secondItem.posY){
+                if(firstItem.posX    < secondItem.posX + secondItem.width &&
+                    firstItem.posX   + firstItem.width > secondItem.posX &&
+                    firstItem.posY   < secondItem.posY + secondItem.height &&
+                    firstItem.height + firstItem.posY  > secondItem.posY){
                 
-                if      (deleteWich === "first")  firstItem.domElement.remove()
+                if      (deleteWich === "first")  firstItem. domElement.remove()
                 else if (deleteWich === "second") secondItem.domElement.remove()
-                else if (deleteWich === "both")  {firstItem.domElement.remove(); secondItem.domElement.remove();}
+                else if (deleteWich === "both")  {firstItem. domElement.remove(); secondItem.domElement.remove();}
                 //else if (deleteWich === "none" {}
                 console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
                 //return [firstItem.domElement, secondItem.domElement]; maybe for later??
@@ -121,6 +86,28 @@ class Game {
             })
         }) 
     };
+
+    removeOnLeaveViewport(gameItemArr, movementDirection){
+        gameItemArr.forEach((gameItemInstance)=>{
+            if(      movementDirection === "up")    
+            {        gameItemInstance.moveUp();
+                if(  (gameItemInstance.posY + gameItemInstance.height) === 100){
+                     gameItemArr.shift();
+                     gameItemInstance.domElement.remove();
+                }            
+            }
+            else if (movementDirection === "down")  
+            {        gameItemInstance.moveDown();
+                if( (gameItemInstance.posY + gameItemInstance.height) === 0){
+                     gameItemArr.shift();
+                     gameItemInstance.domElement.remove();
+                }
+            }         
+            // +double check for left/right (+prior)...
+            // -left& right @ single cond. not necessary@ gameStyle now
+        })
+    }
+        
 
     addEventListeners(){
         document.addEventListener("keydown", (event) => {
