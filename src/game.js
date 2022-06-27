@@ -24,6 +24,13 @@ class Game {
 
         //use as refresh rate -set as attribute for easy,med,hard +multiplier for amount of enemys, massiveItems
         setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
+
+            if(this.player.healthPoints <=0 ){
+                alert("GAMEOVER! \n sorry, you're gone \n try it aggain!")
+                this.player.healthPoints=100;
+                location.reload();
+            }
+
             // create/add new Enemy@ every 60 iterations
             if(this.counter % 60 === 0){
                // const newEnemy = new Enemy();
@@ -53,7 +60,7 @@ class Game {
             this.removeOnLeaveViewport(this.bulletArr,                "up"  );
 
             //remove enemy when hits player& decrease players HP by 5
-            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -=5;}
+            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -=40;}
             //remove bullet and enemy when collide
             this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")
             //block player to go further an MassiveItem (push player down with/before the item)
@@ -260,8 +267,11 @@ class BackgroundMassiveItem extends GameItem {
 const game = new Game();
 game.startGame();
 
-// first: add gameOver!/player died (HP now decreasing by enemy)
 // later: dec HP if pushed below bottom by massiveItem
+
+//options for HP:
+//1. increase HP by time aggain
+//2. decrease HP by time, increase when shot a Enemy (sounds better)
 
 // for later: non MVP
 // new bug!! player can move left/right through massiveGameItems!!!!
