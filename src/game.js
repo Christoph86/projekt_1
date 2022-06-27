@@ -59,15 +59,15 @@ class Game {
 
 
             //remove enemy when hits player
-            this.deleteAtCollisionOfGameItems([this.player],  this.enemyArr, "second")
+            this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")
             //remove bullet and enemy when collide
-            this.deleteAtCollisionOfGameItems(this.bulletArr, this.enemyArr, "both")
+            this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")
 
             this.counter++;
         }, 40);
     }
 
-    deleteAtCollisionOfGameItems(firstItemsArr, secondItemsArr, deleteWich="none"){
+    handleCollisionOfGameItems(firstItemsArr, secondItemsArr, task="none"){
         firstItemsArr.forEach((firstItem)=>{
             secondItemsArr.forEach((secondItem)=> {
 
@@ -76,9 +76,9 @@ class Game {
                     firstItem.posY   < secondItem.posY + secondItem.height &&
                     firstItem.height + firstItem.posY  > secondItem.posY){
                 
-                if      (deleteWich === "first")  firstItem. domElement.remove()
-                else if (deleteWich === "second") secondItem.domElement.remove()
-                else if (deleteWich === "both")  {firstItem. domElement.remove(); secondItem.domElement.remove();}
+                if      (task === "delFirst")  firstItem. domElement.remove()
+                else if (task === "delSecond") secondItem.domElement.remove()
+                else if (task === "delBoth")  {firstItem. domElement.remove(); secondItem.domElement.remove();}
                 //else if (deleteWich === "none" {}
                 console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
                 //return [firstItem.domElement, secondItem.domElement]; maybe for later??
