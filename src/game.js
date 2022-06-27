@@ -26,8 +26,8 @@ class Game {
         setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
             // create/add new Enemy@ every 60 iterations
             if(this.counter % 60 === 0){
-                const newEnemy = new Enemy();
-                this.enemyArr.push(newEnemy);
+               // const newEnemy = new Enemy();
+                this.enemyArr.push(new Enemy());
             }
 
             if(this.counter % 50 === 0){
@@ -70,17 +70,23 @@ class Game {
     }
 
     handleCollisionOfGameItems(firstItemsArr, secondItemsArr, task="none"){
-        firstItemsArr.forEach((firstItem)=>{
-            secondItemsArr.forEach((secondItem)=> {
+        firstItemsArr.forEach((firstItem, firstItemIndex)=>{
+            secondItemsArr.forEach((secondItem, secondItemIndex)=> {
 
                 if(firstItem.posX    < secondItem.posX + secondItem.width &&
                     firstItem.posX   + firstItem.width > secondItem.posX &&
                     firstItem.posY   < secondItem.posY + secondItem.height &&
                     firstItem.height + firstItem.posY  > secondItem.posY){
                 
-                if      (task === "delFirst")  firstItem. domElement.remove()
-                else if (task === "delSecond") secondItem.domElement.remove()
-                else if (task === "delBoth")  {firstItem. domElement.remove(); secondItem.domElement.remove();}
+                        //--->delete also from array, maybe use index of forEach(e, i )
+                if      (task === "delFirst")  {firstItem. domElement.remove(); firstItemsArr.splice(firstItemIndex,1);}
+                else if (task === "delSecond") {secondItem.domElement.remove(); secondItemsArr.splice(secondItemIndex,1);}
+                else if (task === "delBoth")  {
+                    firstItem. domElement.remove();
+                    secondItem.domElement.remove();
+                    firstItemsArr.splice(firstItemIndex,1);
+                    secondItemsArr.splice(secondItemIndex,1);
+                }
                 else if (task === "block")    {firstItem.moveDown();}
                 //else if (deleteWich === "none" {}
                 //set collisionWith property (set back to null on every MoveXYZ())
@@ -106,7 +112,7 @@ class Game {
     removeOnLeaveViewport(gameItemArr, movementDirection){
         gameItemArr.forEach((gameItemInstance)=>{
             if(      movementDirection === "up")    
-            {        gameItemInstance.moveUp();
+            {        gameItemInstance.moveUp(); //??? check this line, necessary? think no
                 if(  (gameItemInstance.posY + gameItemInstance.height) === 100){
                      gameItemArr.shift();
                      gameItemInstance.domElement.remove();
