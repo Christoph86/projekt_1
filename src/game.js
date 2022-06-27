@@ -59,6 +59,8 @@ class Game {
             this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")
             //block player to go further an MassiveItem (push player down with/before the item)
             this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
+            //remove Bullet when hits a MassiveItem
+            this.handleCollisionOfGameItems(this.bulletArr, this.backgroundMassiveItemArr, "delFirst")
 
             this.counter++;
         }, 40);
@@ -253,8 +255,15 @@ class BackgroundMassiveItem extends GameItem {
 const game = new Game();
 game.startGame();
 
+// first: add gameOver!/player died
+// dec HP if hits enemy
+// later: dec HP if pushed below bottom by massiveItem
 
 // for later: non MVP
+// new bug!! player can move left/right through massiveGameItems!!!!
+// -->able to get last invoked keyEvent to get direction????
+// or specifiy collision condition???
+
 //-add linear transition@refreshrate to movements
 //
 //-player goes with the background! more intense playing exp
