@@ -62,6 +62,8 @@ class Game {
             this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")
             //remove bullet and enemy when collide
             this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")
+            //block player to go further an MassiveItem (push player down with/before the item)
+            this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
 
             this.counter++;
         }, 40);
@@ -79,9 +81,23 @@ class Game {
                 if      (task === "delFirst")  firstItem. domElement.remove()
                 else if (task === "delSecond") secondItem.domElement.remove()
                 else if (task === "delBoth")  {firstItem. domElement.remove(); secondItem.domElement.remove();}
+                else if (task === "block")    {firstItem.moveDown();}
                 //else if (deleteWich === "none" {}
+                //set collisionWith property (set back to null on every MoveXYZ())
+                firstItem.collisionWith  = secondItem;
+                secondItem.collisionWith = firstItem;
                 console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
                 //return [firstItem.domElement, secondItem.domElement]; maybe for later??
+                } else { //no collision detected
+                        // iteration 1 --> a1 hits b1 !! next iteration: a1 !hits b2 so a1.collisionWith would be "" even it may still in contact with b1
+                        // so i check if both elements are a pair. and set "" only then
+                        // check to eachother, they have different classes
+
+                        //remember as it was without collisionWith, to maybe make semiMassiveItems the player can "jump/go thru" over
+                        if(firstItem.collisionWith === secondItem && secondItem.collisionWith === firstItem){
+                            firstItem.collisionWith  = "";
+                            secondItem.collisionWith = "";
+                        }
                 }
             })
         }) 
@@ -124,11 +140,12 @@ class Game {
 
 //class for all items in the Game
 class GameItem {
-    constructor(width, height, posX, posY, itemClass) {
+    constructor(width, height, posX, posY, itemClass, collisionWith="") {
         this.width  = width;
         this.height = height;
         this.posX   = posX;
         this.posY   = posY;
+        this.collisionWith = collisionWith;
 
         //itemClass: player, enemy, bullet,....
         this.itemClass  = itemClass;
@@ -180,13 +197,20 @@ class Player extends GameItem {
     this.bulletArr = []
     }
 
-    //overwrites moveDown() of GameItem class,
-    //add condition so the playery can't go outside viewport
+    moveUp() {
+        if(this.posY +this.height < 100 && this.collisionWith.itemClass !== "backgroundMassiveItem"){
+            this.posY++;
+            this.domElement.style.bottom = this.posY + "vh";
+            }
+    }
+
+    //overwrites moveDown() of GameItem class, add condition so the playery can't go outside viewport
     moveDown(){ 
     if(this.posY > 0){
         this.posY--;
         this.domElement.style.bottom = this.posY + "vh";
         }
+        this.collisionWith = null;
     }
 
     shoot() {
