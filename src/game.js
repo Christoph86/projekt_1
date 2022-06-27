@@ -1,8 +1,8 @@
 class Game {
     constructor() {
-        this.player = null; // Player
-        this.enemyArr = []; // all Enemys
-        this.bulletArr = null; // all Bullets shoot from Player -get ref from player instance
+        this.player = null;
+        this.enemyArr = [];
+        this.bulletArr = null;
         
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
@@ -46,16 +46,11 @@ class Game {
                 this.movingBackgroundArr.push(newMovingBackGroundRow);
             }
 
-            //remove "moving" background    @going "down" out viewport
-            this.removeOnLeaveViewport(this.movingBackgroundArr, "down");
-            //remove backgroundItems        @going "down" out viewport
-            this.removeOnLeaveViewport(this.backgroundItemArr, "down");
-            //remove backgroundMassiveItems @going "down" out viewport
+            this.removeOnLeaveViewport(this.movingBackgroundArr,      "down");
+            this.removeOnLeaveViewport(this.backgroundItemArr,        "down");
             this.removeOnLeaveViewport(this.backgroundMassiveItemArr, "down");
-            //remove enemys                 @going "down" out viewport
-            this.removeOnLeaveViewport(this.enemyArr, "down");
-            //remove Bulllets               @going "up" out viewporst
-            this.removeOnLeaveViewport(this.bulletArr, "up");
+            this.removeOnLeaveViewport(this.enemyArr,                 "down");
+            this.removeOnLeaveViewport(this.bulletArr,                "up"  );
 
 
             //remove enemy when hits player
@@ -78,7 +73,6 @@ class Game {
                     firstItem.posY   < secondItem.posY + secondItem.height &&
                     firstItem.height + firstItem.posY  > secondItem.posY){
                 
-                        //--->delete also from array, maybe use index of forEach(e, i )
                 if      (task === "delFirst")  {firstItem. domElement.remove(); firstItemsArr.splice(firstItemIndex,1);}
                 else if (task === "delSecond") {secondItem.domElement.remove(); secondItemsArr.splice(secondItemIndex,1);}
                 else if (task === "delBoth")  {
@@ -88,16 +82,13 @@ class Game {
                     secondItemsArr.splice(secondItemIndex,1);
                 }
                 else if (task === "block")    {firstItem.moveDown();}
-                //else if (deleteWich === "none" {}
-                //set collisionWith property (set back to null on every MoveXYZ())
                 firstItem.collisionWith  = secondItem;
                 secondItem.collisionWith = firstItem;
                 console.log(`collision between ${firstItem.itemClass} and ${secondItem.itemClass}`);
                 //return [firstItem.domElement, secondItem.domElement]; maybe for later??
-                } else { //no collision detected
+                } else {//no collision detected
                         // iteration 1 --> a1 hits b1 !! next iteration: a1 !hits b2 so a1.collisionWith would be "" even it may still in contact with b1
-                        // so i check if both elements are a pair. and set "" only then
-                        // check to eachother, they have different classes
+                        // so i check eachother if both elements are a pair and only then set ""
 
                         //remember as it was without collisionWith, to maybe make semiMassiveItems the player can "jump/go thru" over
                         if(firstItem.collisionWith === secondItem && secondItem.collisionWith === firstItem){
@@ -216,7 +207,6 @@ class Player extends GameItem {
         this.posY--;
         this.domElement.style.bottom = this.posY + "vh";
         }
-        this.collisionWith = null;
     }
 
     shoot() {
@@ -265,16 +255,11 @@ game.startGame();
 
 
 // for later: non MVP
-// bug: enemys removes multiple bullets,
-// some of these don't run outside viewport, remains
+//-add linear transition@refreshrate to movements
 //
-//add linear transition@refreshrate to movements
-//
-//player goes with the background! more intense playing exp
+//-player goes with the background! more intense playing exp
 //set start of player at least @posY25 for this
 //
-// health points for player, highscore, increased by time +inc@ shot enemy, get bonusItem
+//-health points for player, highscore, increased by time +inc@ shot enemy, get bonusItem
 //
-// class MassiveItems//that will block the players movement
-//
-//avoid items created on the same x-pos-range(ofElm.width) 
+//-avoid items created on the same x-pos-range(ofElm.width) 
