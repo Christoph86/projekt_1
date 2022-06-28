@@ -60,14 +60,19 @@ body {
 
 .bullet {
     z-index: 21;
-    background-color: blue;
     position: absolute;
-    border: 3px solid black;
+}
+
+.bullet img {
+    z-index: 21;
+    position: absolute;
+    border: 1px solid black;
+    width: inherit;
+    height: auto; /*to keep original aspect*/
 }
 
 .enemy {
     z-index: 28;
-    /* background-color: red; */
     position: absolute;
 }
 
