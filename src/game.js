@@ -3,6 +3,9 @@ class Game {
         this.player = null;
         this.enemyArr = [];
         this.bulletArr = null;
+        this.labelHealthPoints = null;
+        this.labelHighscore = null;
+
         
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
@@ -16,6 +19,12 @@ class Game {
         this.player = new Player();
         //connect bulletArr ref of game with the one from player
         this.bulletArr = this.player.bulletArr;
+
+        //not a "real" gameItem... should write it by hand?? god/bad practice
+        //using "null" to use game.css to style, using 'rem' and not 'vh/vw'
+        this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
+        this.labelHighscore    = new Label(null,null,null,null,"label highscore");
+
         //need a instance to use .height for counter to create further slices/rows by timer
         //will fix itself even if you use an other height in the interfal(), when this [0]
         this.movingBackgroundArr.push(new movingBackground());
@@ -25,13 +34,20 @@ class Game {
         //use as refresh rate -set as attribute for easy,med,hard +multiplier for amount of enemys, massiveItems
         setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
 
+            this.labelHighscore.domElement.innerText = this.player.highscore + "☃️ Pts."
+
             if(this.player.healthPoints <=0 ){
-                alert("GAMEOVER! \n sorry, you're gone \n try it aggain!")
+                //this.labelHealthPoints.domElement.innerText = "☠️☠️☠️☠️☠️" //<--skull emoji ☃️☃️☃️
+                alert("☠️☠️GAMEOVER☠️☠️ \n sorry, you're gone \n try it aggain!")
                 this.player.healthPoints=100;
+                this.labelHighscore.domElement.innerText="☃️";
                 location.reload();
+            } else {
+                this.labelHealthPoints.domElement.innerText = "❤️ " + this.player.healthPoints
             }
 
-            // create/add new Enemy@ every 60 iterations
+
+
             if(this.counter % 60 === 0){
                // const newEnemy = new Enemy();
                 this.enemyArr.push(new Enemy());
@@ -179,6 +195,8 @@ class GameItem {
     moveUp(){
         if(this.posY +this.height < 100){
         this.posY++;
+        //try for transitions....
+        this.domElement.style.transition = "bottom 2s linear";
         this.domElement.style.bottom = this.posY + "vh";
         }
     }
@@ -202,10 +220,11 @@ class GameItem {
 }
 
 class Player extends GameItem {
-    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player", healthPoints=100){       
+    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player", healthPoints=100, highscore=0){       
         super(width, height, posX, posY, className);
     this.bulletArr = [];
     this.healthPoints = healthPoints;
+    this.highscore = highscore;
     }
 
     moveUp() {
@@ -263,6 +282,12 @@ class BackgroundMassiveItem extends GameItem {
     }
 }
 
+class Label extends GameItem {
+    constructor(width=null, height=null, posX=null, posY=null, className="label"){
+        super(width, height, posX, posY, className);
+    }
+}
+
 
 const game = new Game();
 game.startGame();
@@ -283,7 +308,7 @@ game.startGame();
 //-player goes with the background! more intense playing exp
 //set start of player at least @posY25 for this
 //
-//-health points for player, highscore, increased by time +inc@ shot enemy, get bonusItem
+//-highscore, increased by time +inc@ shot enemy, get bonusItem
 //
 //-avoid items created on the same x-pos-range(ofElm.width) 
 
