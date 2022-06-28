@@ -1,8 +1,32 @@
+/* z-index...
+index 0-9   Body, gamefield
+index 10-19  for Background, passive elements
+index 20-28 for active elements bonus, enemys, bullets
+index 29    exclusive for the Player!
+index 30-39 menues, labels like highscore,....
+index 40-49  */
+
+/* now using: 
+body =                      0
+gamefield =                 1
+movingBackground =         10
+backgroundItems =          11 // just dekopration
+//massiveBackgroundItems = 12 //will block Players movement
+//bonusItems =             20
+bullets =                  21
+enemys =                   28
+player =                   29
+// highscore other stats, 
+//start, pause menue 30+ */
+
 body {
+    z-index: 0;
     background-color: red;
+    /* transition: all 10ms linear; */
 }
 
 #gamefield {
+    z-index: 1;
     width: 100vw;
     height: 100vh;
     background-color: lightgray;
@@ -11,18 +35,69 @@ body {
     /* -->remove possible scrollbars by hand */
 }
 
+.movingBackground {
+    z-index: 10;
+    background-color: lightgray;
+    position: absolute;
+    border: 5px dotted darkgray;
+    background-image: url("../img/snow-very-light-background.jpg");
+    background-repeat: repeat-x;
+}
+
+.backgroundItem {
+    z-index: 11;
+    background-color: lightseagreen;
+    position: absolute;
+    border: 5px dotted darkgray;
+}
+
+.backgroundMassiveItem {
+    z-index: 12;
+    background-color: black;
+    position: absolute;
+    border: 5px dotted darkgray;
+}
+
+.bullet {
+    z-index: 21;
+    background-color: blue;
+    position: absolute;
+    border: 3px solid black;
+}
+
+.enemy {
+    z-index: 28;
+    /* background-color: red; */
+    position: absolute;
+}
+
+.enemy img {
+    z-index: 28;
+    border: red solid 1px;
+    width:inherit;
+    height: auto; /*to keep original aspect*/
+}
+
 .player {
+    z-index: 29;
     background-color: green;
     position: absolute;
 }
 
-.enemy {
-    background-color: red;
+.label {
+    z-index: 30;
+    background-color: green;
     position: absolute;
+    width: fit-content;
+    height:fit-content;
+    }
+
+.healthPoints {
+    left: 1rem;
+    top: 1rem;
 }
 
-/* bullet div/.png's wouls be very small so add border for dev */
-/* .bullet {
-    background-color: blue;
-    border: 3px solid black;
-} */
+.highscore {
+    right: 1rem;
+    top: 1rem;
+}
