@@ -9,6 +9,7 @@ class Game {
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
         this.backgroundMassiveItemArr = [];
+        this.backgroundMassiveItemArrImageSrc= null;
 
         this.counter = 0;
     }
@@ -22,6 +23,11 @@ class Game {
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
+        this.backgroundMassiveItemArrImageSrc = [ //by hand till now
+            `./img/tree1.png`,
+            `./img/tree2.png`,
+            `./img/tree3.png`,
+            `./img/tree4.png`,];
         this.addEventListeners();
 
 
@@ -41,7 +47,9 @@ class Game {
             //creating new Items
             if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
             if(this.counter % 50 === 0){this.backgroundItemArr.push(new BackgroundItem);}
-            if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem);}
+
+            if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemArrImageSrc));}
+
             if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
                 //add new background sclice one by one when fully in viewport
 
@@ -146,6 +154,8 @@ class GameItem {
         this.posX   = posX;
         this.posY   = posY;
         this.collisionWith = collisionWith;
+        // this.imgSrcArr = imgSrcArr;
+            //array with all the src/url of all possible images for this class
 
         //itemClass: player, enemy, bullet,....
         this.itemClass  = itemClass;
@@ -194,8 +204,16 @@ class GameItem {
 }
 
 class Player extends GameItem {
-    constructor(width=5, height=5, posX=50-width/2, posY=0, className="player", healthPoints=100, highscore=0){       
-        super(width, height, posX, posY, className);
+    constructor(
+        width=5,
+        height=5,
+        posX=50-width/2,
+        posY=0,
+        className="player",
+        healthPoints=100,
+        highscore=0)
+    {       
+    super(width, height, posX, posY, className);
     this.bulletArr = [];
     this.healthPoints = healthPoints;
     this.highscore = highscore;
@@ -224,35 +242,68 @@ class Player extends GameItem {
 }
 
 class Enemy extends GameItem {
-    constructor(width = 5,height = 10, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 100, className="enemy"){
+    constructor(
+        width = 5,
+        height = 10,
+        posX = Math.floor(Math.random() * (100 - width + 1)),
+        posY = 100, className="enemy")
+    {
         super(width, height, posX, posY, className);
         this.domElement.innerHTML = `<img src="./img/snowman1.png" alt="🍧"></img>`
     }
 }
 
 class Bullet extends GameItem {
-    constructor(width=1, height=1, posX=null, posY=null, className="bullet"){
+    constructor(
+        width=1,
+        height=1,
+        posX=null,
+        posY=null,
+        className="bullet")
+    {
         super(width, height, posX, posY, className);
         this.domElement.innerHTML = `<img src="./img/carrot_bullet.png" alt="🥕"></img>`
     }
 }
 
 class MovingBackground extends GameItem {
-    constructor(width=100, height=20, posX=0, posY=100, className="movingBackground"){
+    constructor(
+        width=100,
+        height=20,
+        posX=0,
+        posY=100,
+        className="movingBackground")
+    {
         super(width, height, posX, posY, className);
     }
 }
 
 class BackgroundItem extends GameItem {
-    constructor(width=15, height=15, posX= Math.floor(Math.random() * (100 - width + 1)), posY=100, className="backgroundItem"){
+    constructor(
+        width=15,
+        height=15,
+        posX= Math.floor(Math.random() * (100 - width + 1)),
+        posY=100, className="backgroundItem")
+    {
         super(width, height, posX, posY, className);
     }
 }
 
 class BackgroundMassiveItem extends GameItem {
-    constructor(width=15, height=30, posX= Math.floor(Math.random() * (100 - width + 1)), posY=100, className="backgroundMassiveItem"){
+    constructor(
+        imgSrcArr =[],
+        imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
+        width = 15,
+        height = 30,
+        posX = Math.floor(Math.random() * (100 - width + 1)),
+        posY = 100,
+        className="backgroundMassiveItem"
+ )
+    {
         super(width, height, posX, posY, className);
-        this.domElement.innerHTML = `<img src="./img/tree1.png" alt="🌲"></img>`
+        this.imgSrcArr = imgSrcArr;
+        this.imgIndex = imgIndex;
+        this.domElement.innerHTML = `<img src="${imgSrcArr[imgIndex]}" alt="🌲"></img>`
     }
 }
 
@@ -266,6 +317,11 @@ class Label extends GameItem {
 const game = new Game();
 game.startGame();
 
+
+//add imgSrcArr in GameItem Class --> all would have a img, most just usind default values
+
+//maybe change names of the images to automatically creating an Arr of them
+//like by the firstChar....
 
 //bug: @enemys, try using img-size/ratio to set size of the div
 
