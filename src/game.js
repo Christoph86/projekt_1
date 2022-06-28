@@ -250,8 +250,9 @@ class BackgroundItem extends GameItem {
 }
 
 class BackgroundMassiveItem extends GameItem {
-    constructor(width=15, height=15, posX= Math.floor(Math.random() * (100 - width + 1)), posY=100, className="backgroundMassiveItem"){
+    constructor(width=15, height=30, posX= Math.floor(Math.random() * (100 - width + 1)), posY=100, className="backgroundMassiveItem"){
         super(width, height, posX, posY, className);
+        this.domElement.innerHTML = `<img src="./img/tree1.png" alt="🌲"></img>`
     }
 }
 
@@ -273,6 +274,8 @@ game.startGame();
 //options for HP:
 //1. increase HP by time aggain
 //2. decrease HP by time, increase when shot a Enemy (sounds better)
+
+//not best practice using only inherit to size img
 
 // for later: non MVP
 // new bug!! player can move left/right through massiveGameItems!!!!

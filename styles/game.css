@@ -37,9 +37,7 @@ body {
 
 .movingBackground {
     z-index: 10;
-    background-color: lightgray;
     position: absolute;
-    border: 5px dotted darkgray;
     background-image: url("../img/snow-very-light-background.jpg");
     background-repeat: repeat-x;
 }
@@ -53,34 +51,46 @@ body {
 
 .backgroundMassiveItem {
     z-index: 12;
-    background-color: black;
     position: absolute;
-    border: 5px dotted darkgray;
+    border: 2px dotted red;
+
+}
+
+.backgroundMassiveItem img {
+    z-index: 12;
+    position: absolute;
+    /* width: inherit; */
+    width: inherit;
+    height: inherit;
+    border: 1px solid black;
 }
 
 .bullet {
     z-index: 21;
     position: absolute;
+    border: 2px dotted red;
 }
 
 .bullet img {
     z-index: 21;
     position: absolute;
-    border: 1px solid black;
     width: inherit;
-    height: auto; /*to keep original aspect*/
+    height: auto; /*to keep original aspect (only the upper end is necessary for the collision*/
+    border: 1px solid black;
 }
 
 .enemy {
     z-index: 28;
     position: absolute;
+    border: 1px dotted red;
 }
 
 .enemy img {
     z-index: 28;
-    border: red solid 1px;
+    border: 1px solid black;
     width:inherit;
-    height: auto; /*to keep original aspect*/
+    height: inherit;
+    /* height: auto; to keep original aspect */
 }
 
 .player {
