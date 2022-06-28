@@ -233,6 +233,7 @@ class Enemy extends GameItem {
 class Bullet extends GameItem {
     constructor(width=1, height=1, posX=null, posY=null, className="bullet"){
         super(width, height, posX, posY, className);
+        this.domElement.innerHTML = `<img src="./img/carrot_bullet.png" alt="🥕"></img>`
     }
 }
 
