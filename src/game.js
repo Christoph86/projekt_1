@@ -6,83 +6,61 @@ class Game {
         this.labelHealthPoints = null;
         this.labelHighscore = null;
 
-        
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
         this.backgroundMassiveItemArr = [];
-        //helper to iterate with less timers
+
         this.counter = 0;
     }
 
-    //non MVP: give attribuetes, like for level easy, med, hard -->diff speed, amount of enemys
     startGame(){
+        //initialize Game Vars, add Listeners
         this.player = new Player();
-        //connect bulletArr ref of game with the one from player
-        this.bulletArr = this.player.bulletArr;
-
-        //not a "real" gameItem... should write it by hand?? god/bad practice
-        //using "null" to use game.css to style, using 'rem' and not 'vh/vw'
+        this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player
         this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
         this.labelHighscore    = new Label(null,null,null,null,"label highscore");
-
         //need a instance to use .height for counter to create further slices/rows by timer
         //will fix itself even if you use an other height in the interfal(), when this [0]
-        this.movingBackgroundArr.push(new movingBackground());
+        this.movingBackgroundArr.push(new MovingBackground);
 
         this.addEventListeners();
 
-        //use as refresh rate -set as attribute for easy,med,hard +multiplier for amount of enemys, massiveItems
+
         setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
 
-            this.labelHighscore.domElement.innerText = this.player.highscore + "☃️ Pts."
-
-            if(this.player.healthPoints <=0 ){
-                //this.labelHealthPoints.domElement.innerText = "☠️☠️☠️☠️☠️" //<--skull emoji ☃️☃️☃️
+            //update labels for HP and Highscore, check gameover?
+            this.labelHighscore.domElement.innerText = this.player.highscore + "☃️ Pts.";
+            if(this.player.healthPoints > 0) {this.labelHealthPoints.domElement.innerText = "❤️ " + this.player.healthPoints;} 
+            else {
                 alert("☠️☠️GAMEOVER☠️☠️ \n sorry, you're gone \n try it aggain!")
                 this.player.healthPoints=100;
                 this.labelHighscore.domElement.innerText="☃️";
                 location.reload();
-            } else {
-                this.labelHealthPoints.domElement.innerText = "❤️ " + this.player.healthPoints
             }
 
 
+            //creating new Items
+            if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
+            if(this.counter % 50 === 0){this.backgroundItemArr.push(new BackgroundItem);}
+            if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem);}
+            if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
+                //add new background sclice one by one when fully in viewport
 
-            if(this.counter % 60 === 0){
-               // const newEnemy = new Enemy();
-                this.enemyArr.push(new Enemy());
-            }
 
-            if(this.counter % 50 === 0){
-                const newBackgroundItem = new BackgroundItem();
-                this.backgroundItemArr.push(newBackgroundItem);
-            }
+            //move items and check if they're out of Viewport, then delete
+            this.moveAndCheckViewportToRemove(this.movingBackgroundArr,      "down");
+            this.moveAndCheckViewportToRemove(this.backgroundItemArr,        "down");
+            this.moveAndCheckViewportToRemove(this.backgroundMassiveItemArr, "down");
+            this.moveAndCheckViewportToRemove(this.enemyArr,                 "down");
+            this.moveAndCheckViewportToRemove(this.bulletArr,                "up"  );
 
-            if(this.counter % 40 === 0){
-                const newBackgroundMassiveItem = new BackgroundMassiveItem();
-                this.backgroundMassiveItemArr.push(newBackgroundMassiveItem);
-            }
 
-            //add new background sclice one by one when fully in viewport
-            if(this.counter % this.movingBackgroundArr[0].height === 0){
-                const newMovingBackGroundRow = new movingBackground();
-                this.movingBackgroundArr.push(newMovingBackGroundRow);
-            }
-
-            this.removeOnLeaveViewport(this.movingBackgroundArr,      "down");
-            this.removeOnLeaveViewport(this.backgroundItemArr,        "down");
-            this.removeOnLeaveViewport(this.backgroundMassiveItemArr, "down");
-            this.removeOnLeaveViewport(this.enemyArr,                 "down");
-            this.removeOnLeaveViewport(this.bulletArr,                "up"  );
-
-            //remove enemy when hits player& decrease players HP by 5
-            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -=40;}
-            //remove bullet and enemy when collide
-            this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")
-            //block player to go further an MassiveItem (push player down with/before the item)
-            this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
-            //remove Bullet when hits a MassiveItem
+            //handle Collision of elements
+            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -= 10;}
+            if(this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")) {this.player.highscore += 25;}
             this.handleCollisionOfGameItems(this.bulletArr, this.backgroundMassiveItemArr, "delFirst")
+            this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
+                //blocks the player to go further an MassiveItem (push player down with/before the item)
 
             this.counter++;
         }, 40);
@@ -129,7 +107,7 @@ class Game {
         return resultOfCollision;
     };
 
-    removeOnLeaveViewport(gameItemArr, movementDirection){
+    moveAndCheckViewportToRemove(gameItemArr, movementDirection){
         gameItemArr.forEach((gameItemInstance)=>{
             if(      movementDirection === "up")    
             {        gameItemInstance.moveUp(); //??? check this line, necessary? think no
@@ -145,12 +123,9 @@ class Game {
                      gameItemInstance.domElement.remove();
                 }
             }         
-            // +double check for left/right (+prior)...
-            // -left& right @ single cond. not necessary@ gameStyle now
         })
     }
         
-
     addEventListeners(){
         document.addEventListener("keydown", (event) => {
             //is it a good practice to order clockwise like in shorthands???
@@ -234,7 +209,7 @@ class Player extends GameItem {
             }
     }
 
-    //overwrites moveDown() of GameItem class, add condition so the playery can't go outside viewport
+    //overwrites moveDown() of GameItem class, add condition so the player can't go outside viewport
     moveDown(){ 
     if(this.posY > 0){
         this.posY--;
@@ -257,15 +232,12 @@ class Enemy extends GameItem {
 
 class Bullet extends GameItem {
     constructor(width=1, height=1, posX=null, posY=null, className="bullet"){
-        //need position from player,... maybe a way to call player as parent?? -later
-        //think won't exist till constructor not finished, try with dom-selector for player
         super(width, height, posX, posY, className);
     }
 }
 
-class movingBackground extends GameItem {
+class MovingBackground extends GameItem {
     constructor(width=100, height=20, posX=0, posY=100, className="movingBackground"){
-        //--> will need to fill whole backgrouind before start!
         super(width, height, posX, posY, className);
     }
 }
@@ -292,7 +264,8 @@ class Label extends GameItem {
 const game = new Game();
 game.startGame();
 
-// later: dec HP if pushed below bottom by massiveItem
+
+//fill whole background before starts
 
 //options for HP:
 //1. increase HP by time aggain
@@ -300,16 +273,20 @@ game.startGame();
 
 // for later: non MVP
 // new bug!! player can move left/right through massiveGameItems!!!!
-// -->able to get last invoked keyEvent to get direction????
-// or specifiy collision condition???
+// -->able to get last invoked keyEvent to get direction???? or specifiy collision condition???
 
 //-add linear transition@refreshrate to movements
-//
+
 //-player goes with the background! more intense playing exp
 //set start of player at least @posY25 for this
-//
+
 //-highscore, increased by time +inc@ shot enemy, get bonusItem
-//
+
 //-avoid items created on the same x-pos-range(ofElm.width) 
 
 //remember as it was without collisionWith, to maybe make semiMassiveItems the player can "jump/go thru" over
+
+//@setInterval() (or already @startGame??)
+//add attributes like "refreshRate","enemyRate,..." for i.e. change difficulty of game
+
+// later: dec HP if pushed below bottom by massiveItem
