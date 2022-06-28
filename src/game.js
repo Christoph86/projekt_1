@@ -19,14 +19,13 @@ class Game {
         this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player
         this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
         this.labelHighscore    = new Label(null,null,null,null,"label highscore");
-        //need a instance to use .height for counter to create further slices/rows by timer
-        //will fix itself even if you use an other height in the interfal(), when this [0]
         this.movingBackgroundArr.push(new MovingBackground);
-
+            //need a instance to use .height for counter to create further slices/rows by timer
+            //will fix itself even if you use an other height in the interfal(), when this [0]
         this.addEventListeners();
 
 
-        setInterval(() => { //get attr from possible startmenue(easy,med, hard...)
+        setInterval(() => {
 
             //update labels for HP and Highscore, check gameover?
             this.labelHighscore.domElement.innerText = this.player.highscore + "☃️ Pts.";
@@ -110,7 +109,7 @@ class Game {
     moveAndCheckViewportToRemove(gameItemArr, movementDirection){
         gameItemArr.forEach((gameItemInstance)=>{
             if(      movementDirection === "up")    
-            {        gameItemInstance.moveUp(); //??? check this line, necessary? think no
+            {        gameItemInstance.moveUp();
                 if(  (gameItemInstance.posY + gameItemInstance.height) === 100){
                      gameItemArr.shift();
                      gameItemInstance.domElement.remove();
@@ -225,8 +224,9 @@ class Player extends GameItem {
 }
 
 class Enemy extends GameItem {
-    constructor(width = 5,height = 5, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 100, className="enemy"){
+    constructor(width = 5,height = 10, posX = Math.floor(Math.random() * (100 - width + 1)), posY = 100, className="enemy"){
         super(width, height, posX, posY, className);
+        this.domElement.innerHTML = `<img src="./img/snowman1.png" alt="🍧"></img>`
     }
 }
 
@@ -264,6 +264,8 @@ class Label extends GameItem {
 const game = new Game();
 game.startGame();
 
+
+//bug: @enemys, try using img-size/ratio to set size of the div
 
 //fill whole background before starts
 
