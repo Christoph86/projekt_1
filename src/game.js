@@ -5,6 +5,7 @@ class Game {
         this.bulletArr = null;
         this.labelHealthPoints = null;
         this.labelHighscore = null;
+        this.playerImgArr = []
 
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
@@ -17,30 +18,23 @@ class Game {
 
     startGame(){
         //initialize Game Vars, add Listeners
-        this.player = new Player();
+        this.backgroundMassiveItemArrImageSrc = [
+            `./img/tree1.png`, `./img/tree2.png`, `./img/tree3.png`, `./img/tree4.png`];
+        this.backgroundItemArrImageSrc = [
+            `./img/deco1.png`, `./img/deco2.png`, `./img/deco3.png`, `./img/deco4.png`, `./img/deco5.png`, `./img/deco6.png`, `./img/deco7.png`, `./img/deco8.png`];
+        this.playerImgArr = [
+            `./img/player_pacman_ghost.png`];
+
+        this.player = new Player(this.playerImgArr);
         this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player
         this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
         this.labelHighscore    = new Label(null,null,null,null,"label highscore");
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
-        this.backgroundMassiveItemArrImageSrc = [
-            `./img/tree1.png`,
-            `./img/tree2.png`,
-            `./img/tree3.png`,
-            `./img/tree4.png`];
 
-        this.backgroundItemArrImageSrc = [
-            `./img/deco1.png`,
-            `./img/deco2.png`,
-            `./img/deco3.png`,
-            `./img/deco4.png`,
-            `./img/deco5.png`,
-            `./img/deco6.png`,
-            `./img/deco7.png`,
-            `./img/deco8.png`];
+
         this.addEventListeners();
-
 
 
         setInterval(() => {
@@ -58,12 +52,10 @@ class Game {
 
             //creating new Items
             if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
-            if(this.counter % 20 === 0){this.backgroundItemArr.push(new BackgroundItem(this.backgroundItemArrImageSrc));}
+            if(this.counter % 10 === 0){this.backgroundItemArr.push(new BackgroundItem(this.backgroundItemArrImageSrc));}
             if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemArrImageSrc));}
-
             if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
                 //add new background sclice one by one when fully in viewport
-
 
             //move items and check if they're out of Viewport, then delete
             this.moveAndCheckViewportToRemove(this.movingBackgroundArr,      "down");
@@ -74,7 +66,7 @@ class Game {
 
 
             //handle Collision of elements
-            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -= 10;}
+            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -= 40;}
             if(this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")) {this.player.highscore += 25;}
             this.handleCollisionOfGameItems(this.bulletArr, this.backgroundMassiveItemArr, "delFirst")
             this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
@@ -190,8 +182,8 @@ class GameItem {
     moveUp(){
         if(this.posY +this.height < 100){
         this.posY++;
-        //try for transitions....
-        this.domElement.style.transition = "bottom 2s linear";
+        // //try for transitions....
+        // this.domElement.style.transition = "bottom 2s linear";
         this.domElement.style.bottom = this.posY + "vh";
         }
     }
@@ -216,6 +208,8 @@ class GameItem {
 
 class Player extends GameItem {
     constructor(
+        imgSrcArr = [],
+        imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
         width=5,
         height=5,
         posX=50-width/2,
@@ -228,6 +222,9 @@ class Player extends GameItem {
     this.bulletArr = [];
     this.healthPoints = healthPoints;
     this.highscore = highscore;
+    this.imgSrcArr = imgSrcArr;
+    this.imgIndex = imgIndex;
+    this.domElement.innerHTML = `<img src="${imgSrcArr[imgIndex]}" alt="🌲"></img>`
     }
 
     moveUp() {
@@ -291,7 +288,7 @@ class MovingBackground extends GameItem {
 
 class BackgroundItem extends GameItem {
     constructor(
-        imgSrcArr =[],
+        imgSrcArr = [],
         imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
         width=6,
         height=10,

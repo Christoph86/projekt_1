@@ -21,14 +21,12 @@ player =                   29
 
 body {
     z-index: 0;
-    background-color: red;
 }
 
 #gamefield {
     z-index: 1;
     width: 100vw;
     height: 100vh;
-    background-color: lightgray;
     position: relative;
     overflow: hidden;
     /* -->remove possible scrollbars by hand */
@@ -43,7 +41,6 @@ body {
 
 .backgroundItem {
     position: absolute;
-    border: 2px dotted red;
 }
 
 .backgroundItem img {
@@ -51,14 +48,11 @@ body {
     position: absolute;
     width: inherit;
     height: inherit;
-    border: 1px solid black;
 }
 
 .backgroundMassiveItem {
     z-index: 12;
     position: absolute;
-    border: 2px dotted red;
-
 }
 
 .backgroundMassiveItem img {
@@ -66,16 +60,11 @@ body {
     position: absolute;
     width: inherit;
     height: inherit;
-    border: 1px solid black;
 }
 
 .bullet {
     z-index: 21;
     position: absolute;
-    border: 2px dotted red;
-    transition: none !important;
-    /* check own system, why my browser still remembering the try to implement transitions?? -cache is cleared*/
-    /* why a default behavior.. so i have to even use !important */
 }
 
 .bullet img {
@@ -83,18 +72,15 @@ body {
     position: absolute;
     width: inherit;
     height: auto; /*to keep original aspect (only the upper end is necessary for the collision*/
-    border: 1px solid black;
 }
 
 .enemy {
     z-index: 28;
     position: absolute;
-    border: 1px dotted red;
 }
 
 .enemy img {
     z-index: 28;
-    border: 1px solid black;
     width:inherit;
     height: inherit;
     /* height: auto; to keep original aspect */
@@ -102,13 +88,17 @@ body {
 
 .player {
     z-index: 29;
-    background-color: green;
     position: absolute;
+}
+
+.player img {
+    z-index: 29;
+    width:inherit;
+    height: inherit;
 }
 
 .label {
     z-index: 30;
-    background-color: green;
     position: absolute;
     width: fit-content;
     height:fit-content;
