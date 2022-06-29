@@ -22,7 +22,6 @@ player =                   29
 body {
     z-index: 0;
     background-color: red;
-    /* transition: all 10ms linear; */
 }
 
 #gamefield {
@@ -43,10 +42,16 @@ body {
 }
 
 .backgroundItem {
-    z-index: 11;
-    background-color: lightseagreen;
     position: absolute;
-    border: 5px dotted darkgray;
+    border: 2px dotted red;
+}
+
+.backgroundItem img {
+    z-index: 11;
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border: 1px solid black;
 }
 
 .backgroundMassiveItem {

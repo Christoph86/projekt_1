@@ -8,6 +8,7 @@ class Game {
 
         this.movingBackgroundArr = [];
         this.backgroundItemArr = [];
+        this.BackgroundItemArrImageSrc= [];
         this.backgroundMassiveItemArr = [];
         this.backgroundMassiveItemArrImageSrc= null;
 
@@ -23,12 +24,23 @@ class Game {
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
-        this.backgroundMassiveItemArrImageSrc = [ //by hand till now
+        this.backgroundMassiveItemArrImageSrc = [
             `./img/tree1.png`,
             `./img/tree2.png`,
             `./img/tree3.png`,
-            `./img/tree4.png`,];
+            `./img/tree4.png`];
+
+        this.backgroundItemArrImageSrc = [
+            `./img/deco1.png`,
+            `./img/deco2.png`,
+            `./img/deco3.png`,
+            `./img/deco4.png`,
+            `./img/deco5.png`,
+            `./img/deco6.png`,
+            `./img/deco7.png`,
+            `./img/deco8.png`];
         this.addEventListeners();
+
 
 
         setInterval(() => {
@@ -46,8 +58,9 @@ class Game {
 
             //creating new Items
             if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
-            if(this.counter % 50 === 0){this.backgroundItemArr.push(new BackgroundItem);}
+            if(this.counter % 20 === 0){this.backgroundItemArr.push(new BackgroundItem(this.backgroundItemArrImageSrc));}
             if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemArrImageSrc));}
+
             if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
                 //add new background sclice one by one when fully in viewport
 
@@ -241,8 +254,8 @@ class Player extends GameItem {
 
 class Enemy extends GameItem {
     constructor(
-        width = 5,
-        height = 10,
+        width = 8,
+        height = 16,
         posX = Math.floor(Math.random() * (100 - width + 1)),
         posY = 100, className="enemy")
     {
@@ -278,12 +291,17 @@ class MovingBackground extends GameItem {
 
 class BackgroundItem extends GameItem {
     constructor(
-        width=15,
-        height=15,
+        imgSrcArr =[],
+        imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
+        width=6,
+        height=10,
         posX= Math.floor(Math.random() * (100 - width + 1)),
         posY=100, className="backgroundItem")
     {
         super(width, height, posX, posY, className);
+        this.imgSrcArr = imgSrcArr;
+        this.imgIndex = imgIndex;
+        this.domElement.innerHTML = `<img src="${imgSrcArr[imgIndex]}" alt="🌲"></img>`
     }
 }
 
