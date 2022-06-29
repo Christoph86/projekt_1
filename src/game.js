@@ -316,39 +316,3 @@ class Label extends GameItem {
 
 const game = new Game();
 game.startGame();
-
-
-//add imgSrcArr in GameItem Class --> all would have a img, most just usind default values
-
-//maybe change names of the images to automatically creating an Arr of them
-//like by the firstChar....
-
-//bug: @enemys, try using img-size/ratio to set size of the div
-
-//fill whole background before starts
-
-//options for HP:
-//1. increase HP by time aggain
-//2. decrease HP by time, increase when shot a Enemy (sounds better)
-
-//not best practice using only inherit to size img
-
-// for later: non MVP
-// new bug!! player can move left/right through massiveGameItems!!!!
-// -->able to get last invoked keyEvent to get direction???? or specifiy collision condition???
-
-//-add linear transition@refreshrate to movements
-
-//-player goes with the background! more intense playing exp
-//set start of player at least @posY25 for this
-
-//-highscore, increased by time +inc@ shot enemy, get bonusItem
-
-//-avoid items created on the same x-pos-range(ofElm.width) 
-
-//remember as it was without collisionWith, to maybe make semiMassiveItems the player can "jump/go thru" over
-
-//@setInterval() (or already @startGame??)
-//add attributes like "refreshRate","enemyRate,..." for i.e. change difficulty of game
-
-// later: dec HP if pushed below bottom by massiveItem
