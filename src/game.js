@@ -18,8 +18,8 @@ class Game {
         //initialize Game Vars, add Listeners
         this.player = new Player();
         this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player
-        this.labelHealthPoints = new Label(null, null, null, null, null, "label healthPoints");
-        this.labelHighscore    = new Label(null, null, null, null, null, "label highscore");
+        this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
+        this.labelHighscore    = new Label(null,null,null,null,"label highscore");
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
@@ -45,7 +45,7 @@ class Game {
 
 
             //creating new Items
-            if(this.counter % 35 === 0){this.enemyArr.push(new Enemy());}
+            if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
             if(this.counter % 50 === 0){this.backgroundItemArr.push(new BackgroundItem);}
             if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemArrImageSrc));}
             if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
@@ -146,8 +146,7 @@ class Game {
 
 //class for all items in the Game
 class GameItem {
-    constructor(imgSrcArr, width, height, posX, posY, itemClass, collisionWith="") {
-        this.imgSrcArr = imgSrcArr;
+    constructor(width, height, posX, posY, itemClass, collisionWith="") {
         this.width  = width;
         this.height = height;
         this.posX   = posX;
@@ -204,7 +203,6 @@ class GameItem {
 
 class Player extends GameItem {
     constructor(
-        imgSrcArr = [],
         width=5,
         height=5,
         posX=50-width/2,
@@ -213,7 +211,7 @@ class Player extends GameItem {
         healthPoints=100,
         highscore=0)
     {       
-    super(imgSrcArr, width, height, posX, posY, className);
+    super(width, height, posX, posY, className);
     this.bulletArr = [];
     this.healthPoints = healthPoints;
     this.highscore = highscore;
@@ -235,7 +233,7 @@ class Player extends GameItem {
     }
 
     shoot() {
-        const newBullet = new Bullet([], 1, 1, (this.posX+this.width/2), (this.posY+this.height), "bullet");
+        const newBullet = new Bullet(1, 1, (this.posX+this.width/2), (this.posY+this.height), "bullet");
         this.bulletArr.push(newBullet);
         console.log("shoting!!!");
     }
@@ -243,53 +241,49 @@ class Player extends GameItem {
 
 class Enemy extends GameItem {
     constructor(
-        imgSrcArr = [],
         width = 5,
         height = 10,
         posX = Math.floor(Math.random() * (100 - width + 1)),
         posY = 100, className="enemy")
     {
-        super(imgSrcArr, width, height, posX, posY, className);
+        super(width, height, posX, posY, className);
         this.domElement.innerHTML = `<img src="./img/snowman1.png" alt="🍧"></img>`
     }
 }
 
 class Bullet extends GameItem {
     constructor(
-        imgSrcArr = [],
         width=1,
         height=1,
         posX=null,
         posY=null,
         className="bullet")
     {
-        super(imgSrcArr, width, height, posX, posY, className);
+        super(width, height, posX, posY, className);
         this.domElement.innerHTML = `<img src="./img/carrot_bullet.png" alt="🥕"></img>`
     }
 }
 
 class MovingBackground extends GameItem {
     constructor(
-        imgSrcArr = [],
         width=100,
         height=20,
         posX=0,
         posY=100,
         className="movingBackground")
     {
-        super(imgSrcArr, width, height, posX, posY, className);
+        super(width, height, posX, posY, className);
     }
 }
 
 class BackgroundItem extends GameItem {
     constructor(
-        imgSrcArr = [],
         width=15,
         height=15,
         posX= Math.floor(Math.random() * (100 - width + 1)),
         posY=100, className="backgroundItem")
     {
-        super(imgSrcArr, width, height, posX, posY, className);
+        super(width, height, posX, posY, className);
     }
 }
 
@@ -304,7 +298,7 @@ class BackgroundMassiveItem extends GameItem {
         className="backgroundMassiveItem"
  )
     {
-        super(imgSrcArr, width, height, posX, posY, className);
+        super(width, height, posX, posY, className);
         this.imgSrcArr = imgSrcArr;
         this.imgIndex = imgIndex;
         this.domElement.innerHTML = `<img src="${imgSrcArr[imgIndex]}" alt="🌲"></img>`
@@ -312,16 +306,8 @@ class BackgroundMassiveItem extends GameItem {
 }
 
 class Label extends GameItem {
-    constructor(
-        imgSrcArr = [],
-        width=null,
-        height=null,
-        posX=null,
-        posY=null,
-        className="label"
-        )
-    {
-        super(imgSrcArr, width, height, posX, posY, className);
+    constructor(width=null, height=null, posX=null, posY=null, className="label"){
+        super(width, height, posX, posY, className);
     }
 }
 
