@@ -45,11 +45,9 @@ class Game {
 
 
             //creating new Items
-            if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
+            if(this.counter % 35 === 0){this.enemyArr.push(new Enemy());}
             if(this.counter % 50 === 0){this.backgroundItemArr.push(new BackgroundItem);}
-
             if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemArrImageSrc));}
-
             if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
                 //add new background sclice one by one when fully in viewport
 
@@ -148,7 +146,8 @@ class Game {
 
 //class for all items in the Game
 class GameItem {
-    constructor(width, height, posX, posY, itemClass, collisionWith="") {
+    constructor(imgSrcArr, width, height, posX, posY, itemClass, collisionWith="") {
+        this.imgSrcArr = imgSrcArr;
         this.width  = width;
         this.height = height;
         this.posX   = posX;
