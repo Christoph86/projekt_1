@@ -12,9 +12,6 @@ class Game {
         this.backgroundMassiveItemArr = [];
         this.backgroundMassiveItemArrImageSrc= null;
 
-        // this.useViewportWidth = 80;
-        // this.useViewportHeight = 80;
-
         this.counter = 0;
     }
 
@@ -66,7 +63,7 @@ class Game {
 
 
             //handle Collision of elements
-            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond"))      {this.player.healthPoints -= 40;}
+            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -= 40;}
             if(this.handleCollisionOfGameItems(this.player.bulletArr, this.enemyArr, "delBoth")) {this.player.highscore += 25;}
             this.handleCollisionOfGameItems(this.player.bulletArr, this.backgroundMassiveItemArr, "delFirst")
             this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
@@ -181,7 +178,7 @@ class GameItem {
     }
 
     moveUp(){
-        if(this.posY +this.height < 100){
+        if(this.posY + this.height < 100){
         this.posY++;
         // //try for transitions....
         // this.domElement.style.transition = "bottom 2s linear";
@@ -189,13 +186,14 @@ class GameItem {
         }
     }
     moveRight(){
-        if(this.posX + this.width < 100){
+        if(this.posX + this.width < 70){
+            //why 70 works??
         this.posX++;
         this.domElement.style.left = this.posX + "vw";
         }  
     }
     moveDown(){
-        //free to get outside viewpoport
+        //free to get outside viewpoport, player adds a condition so he can't
         this.posY--;
         this.domElement.style.bottom = this.posY + "vh";
     }
@@ -229,7 +227,7 @@ class Player extends GameItem {
     }
 
     moveUp() {
-        if(this.posY +this.height < 100 && this.collisionWith.itemClass !== "backgroundMassiveItem"){
+        if(this.posY +this.height < 80 && this.collisionWith.itemClass !== "backgroundMassiveItem"){
             this.posY++;
             this.domElement.style.bottom = this.posY + "vh";
             }
@@ -254,7 +252,7 @@ class Enemy extends GameItem {
     constructor(
         width = 8,
         height = 16,
-        posX = Math.floor(Math.random() * (100 - width + 1)),
+        posX = Math.floor(Math.random() * (70 - width + 1)),
         posY = 100, className="enemy")
     {
         super(width, height, posX, posY, className);
@@ -293,7 +291,7 @@ class BackgroundItem extends GameItem {
         imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
         width=6,
         height=10,
-        posX= Math.floor(Math.random() * (100 - width + 1)),
+        posX= Math.floor(Math.random() * (90 - width + 1)),
         posY=100, className="backgroundItem")
     {
         super(width, height, posX, posY, className);
@@ -309,7 +307,7 @@ class BackgroundMassiveItem extends GameItem {
         imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
         width = 15,
         height = 30,
-        posX = Math.floor(Math.random() * (100 - width + 1)),
+        posX = Math.floor(Math.random() * (90 - width + 1)),
         posY = 100,
         className="backgroundMassiveItem"
  )

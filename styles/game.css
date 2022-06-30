@@ -21,6 +21,8 @@ massiveBackgroundItems =  29 //will block Players movement
 
 body {
     z-index: 0;
+    background-image: url(../img/ice_background.jpg);
+    overflow: hidden;
 }
 
 #snowmen-invasion {
