@@ -2,7 +2,6 @@ class Game {
     constructor() {
         this.player = null;
         this.enemyArr = [];
-        this.bulletArr = null;
         this.labelHealthPoints = null;
         this.labelHighscore = null;
         this.playerImgArr = []
@@ -26,7 +25,6 @@ class Game {
             `./img/player_pacman_ghost.png`,`./img/player_pacman_ghost1.png`,`./img/player_pacman_ghost2.png`];
 
         this.player = new Player(this.playerImgSrcArr);
-        this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player
         this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
         this.labelHighscore    = new Label(null,null,null,null,"label highscore");
         this.movingBackgroundArr.push(new MovingBackground);
@@ -61,13 +59,13 @@ class Game {
             this.moveAndCheckViewportToRemove(this.backgroundItemArr,        "down");
             this.moveAndCheckViewportToRemove(this.backgroundMassiveItemArr, "down");
             this.moveAndCheckViewportToRemove(this.enemyArr,                 "down");
-            this.moveAndCheckViewportToRemove(this.bulletArr,                "up"  );
+            this.moveAndCheckViewportToRemove(this.player.bulletArr,         "up"  );
 
 
             //handle Collision of elements
             if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -= 40;}
-            if(this.handleCollisionOfGameItems(this.bulletArr, this.enemyArr, "delBoth")) {this.player.highscore += 25;}
-            this.handleCollisionOfGameItems(this.bulletArr, this.backgroundMassiveItemArr, "delFirst")
+            if(this.handleCollisionOfGameItems(this.player.bulletArr, this.enemyArr, "delBoth")) {this.player.highscore += 25;}
+            this.handleCollisionOfGameItems(this.player.bulletArr, this.backgroundMassiveItemArr, "delFirst")
             this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
                 //blocks the player to go further an MassiveItem (push player down with/before the item)
 
