@@ -23,7 +23,7 @@ class Game {
         this.backgroundItemImageSrcArr = [
             `./img/deco1.png`, `./img/deco2.png`, `./img/deco3.png`, `./img/deco4.png`, `./img/deco5.png`, `./img/deco6.png`, `./img/deco7.png`, `./img/deco8.png`];
         this.playerImgSrcArr = [
-            `./img/player_pacman_ghost.png`];
+            `./img/player_pacman_ghost.png`,`./img/player_pacman_ghost1.png`,`./img/player_pacman_ghost2.png`];
 
         this.player = new Player(this.playerImgSrcArr);
         this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player

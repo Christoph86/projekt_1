@@ -1,21 +1,21 @@
 /* z-index...
 index 0-9   Body, gamefield
 index 10-19  for Background, passive elements
-index 20-28 for active elements bonus, enemys, bullets
-index 29    exclusive for the Player!
+index 20-27 for active elements bonus, enemys, bullets
+index 28    exclusive for the Player!
 index 30-39 menues, labels like highscore,....
 index 40-49  */
 
 /* now using: 
-body =                      0
-gamefield =                 1
-movingBackground =         10
-backgroundItems =          11 // just dekopration
-//massiveBackgroundItems = 12 //will block Players movement
-//bonusItems =             20
-bullets =                  21
-enemys =                   28
-player =                   29
+body =                     0
+gamefield =                1
+movingBackground =        10
+backgroundItems =         11 // just dekopration
+//bonusItems =            20
+bullets =                 21
+enemys =                  27
+player =                  28
+massiveBackgroundItems =  29 //will block Players movement
 // highscore other stats, 
 //start, pause menue 30+ */
 
@@ -51,12 +51,12 @@ body {
 }
 
 .backgroundMassiveItem {
-    z-index: 12;
+    z-index: 29;
     position: absolute;
 }
 
 .backgroundMassiveItem img {
-    z-index: 12;
+    z-index: 29;
     position: absolute;
     width: inherit;
     height: inherit;
@@ -75,24 +75,24 @@ body {
 }
 
 .enemy {
-    z-index: 28;
+    z-index: 27;
     position: absolute;
 }
 
 .enemy img {
-    z-index: 28;
+    z-index: 27;
     width:inherit;
     height: inherit;
     /* height: auto; to keep original aspect */
 }
 
 .player {
-    z-index: 29;
+    z-index: 28;
     position: absolute;
 }
 
 .player img {
-    z-index: 29;
+    z-index: 28;
     width:inherit;
     height: inherit;
 }
