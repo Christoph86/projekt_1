@@ -36,6 +36,11 @@ body {
     /* -->remove possible scrollbars by hand */
 }
 
+#snowmen-invasion * {
+    transition: all 40ms;
+}
+
+
 .movingBackground {
     z-index: 10;
     position: absolute;
