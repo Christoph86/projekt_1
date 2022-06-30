@@ -18,21 +18,20 @@ class Game {
 
     startGame(){
         //initialize Game Vars, add Listeners
-        this.backgroundMassiveItemArrImageSrc = [
+        this.backgroundMassiveItemAImageSrcArr = [
             `./img/tree1.png`, `./img/tree2.png`, `./img/tree3.png`, `./img/tree4.png`];
-        this.backgroundItemArrImageSrc = [
+        this.backgroundItemImageSrcArr = [
             `./img/deco1.png`, `./img/deco2.png`, `./img/deco3.png`, `./img/deco4.png`, `./img/deco5.png`, `./img/deco6.png`, `./img/deco7.png`, `./img/deco8.png`];
-        this.playerImgArr = [
+        this.playerImgSrcArr = [
             `./img/player_pacman_ghost.png`];
 
-        this.player = new Player(this.playerImgArr);
+        this.player = new Player(this.playerImgSrcArr);
         this.bulletArr = this.player.bulletArr; //connect bulletArr ref of game with the one from player
         this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
         this.labelHighscore    = new Label(null,null,null,null,"label highscore");
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
-
 
         this.addEventListeners();
 
@@ -52,8 +51,8 @@ class Game {
 
             //creating new Items
             if(this.counter % 60 === 0){this.enemyArr.push(new Enemy());}
-            if(this.counter % 10 === 0){this.backgroundItemArr.push(new BackgroundItem(this.backgroundItemArrImageSrc));}
-            if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemArrImageSrc));}
+            if(this.counter % 10 === 0){this.backgroundItemArr.push(new BackgroundItem(this.backgroundItemImageSrcArr));}
+            if(this.counter % 40 === 0){this.backgroundMassiveItemArr.push(new BackgroundMassiveItem(this.backgroundMassiveItemAImageSrcArr));}
             if(this.counter % this.movingBackgroundArr[0].height === 0){this.movingBackgroundArr.push(new MovingBackground);}
                 //add new background sclice one by one when fully in viewport
 
@@ -143,8 +142,9 @@ class Game {
             else if(event.key === "ArrowRight") this.player.moveRight();
             else if(event.key === "ArrowDown" ) this.player.moveDown();
             else if(event.key === "ArrowLeft" ) this.player.moveLeft();
-            else if(event.key === "s"         ) this.player.shoot(); //look@problems with "Space" key, choose other key
-            // else if(event.key  === "Escape")  console.log("will pause+ option to quite/restart the Game");
+            else if(event.key === "s"         ) this.player.shoot(); 
+            else if(event.key === "p"         ) alert("You're taking a break!\n would the space snowmens do it to??\n...Hurry Up!!"); 
+
         });
     }
 }
@@ -175,7 +175,7 @@ class GameItem {
         newDomElm.style.left   = this.posX   + "vw";
         newDomElm.style.bottom = this.posY   + "vh";
 
-        document.getElementById("gamefield").appendChild(newDomElm);
+        document.getElementById("snowmen-invasion").appendChild(newDomElm);
         return newDomElm;
     }
 
