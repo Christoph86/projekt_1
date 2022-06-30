@@ -12,6 +12,9 @@ class Game {
         this.backgroundMassiveItemArr = [];
         this.backgroundMassiveItemArrImageSrc= null;
 
+        // this.useViewportWidth = 80;
+        // this.useViewportHeight = 80;
+
         this.counter = 0;
     }
 
@@ -63,7 +66,7 @@ class Game {
 
 
             //handle Collision of elements
-            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond")) {this.player.healthPoints -= 40;}
+            if(this.handleCollisionOfGameItems([this.player],  this.enemyArr, "delSecond"))      {this.player.healthPoints -= 40;}
             if(this.handleCollisionOfGameItems(this.player.bulletArr, this.enemyArr, "delBoth")) {this.player.highscore += 25;}
             this.handleCollisionOfGameItems(this.player.bulletArr, this.backgroundMassiveItemArr, "delFirst")
             this.handleCollisionOfGameItems([this.player], this.backgroundMassiveItemArr, "block")
