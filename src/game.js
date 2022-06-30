@@ -16,6 +16,7 @@ class Game {
     }
 
     startGame(){
+        
         //initialize Game Vars, add Listeners
         this.backgroundMassiveItemAImageSrcArr = [
             `./img/tree1.png`, `./img/tree2.png`, `./img/tree3.png`, `./img/tree4.png`];
@@ -75,8 +76,6 @@ class Game {
 
     handleCollisionOfGameItems(firstItemsArr, secondItemsArr, task="none"){
         let resultOfCollision = false;
-        //however need a helping var,... maybe because of the scope in the forEach...
-        //but why a return in the nested for Each don't worked?? maybe killed just the nested loop... 
         firstItemsArr.forEach((firstItem, firstItemIndex)=>{
             secondItemsArr.forEach((secondItem, secondItemIndex)=> {
 
@@ -210,7 +209,7 @@ class Player extends GameItem {
         imgSrcArr = [],
         imgIndex = Math.floor(Math.random() * (imgSrcArr.length)),
         width=5,
-        height=5,
+        height=9,
         posX=50-width/2,
         posY=0,
         className="player",
