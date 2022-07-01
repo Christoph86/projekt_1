@@ -11,16 +11,12 @@ class Game {
         this.BackgroundItemArrImageSrc= [];
         this.backgroundMassiveItemArr = [];
         this.backgroundMassiveItemArrImageSrc= null;
+        this.parentBackgroundSnowflakeImageSrc = [];
 
         this.counter = 0;
     }
 
     startGame(){
-
-        // const newTitle = document.createElement("h1");
-        // newTitle.className = "test"
-        // newTitle.innerHTML = "Snowmen Invasion"
-        // document.querySelector("body").prepend(newTitle)
         
         //initialize Game Vars, add Listeners
         this.backgroundMassiveItemAImageSrcArr = [
@@ -36,8 +32,6 @@ class Game {
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
-
-
 
 
         this.addEventListeners();
@@ -162,8 +156,6 @@ class GameItem {
         this.posX   = posX;
         this.posY   = posY;
         this.collisionWith = collisionWith;
-        // this.imgSrcArr = imgSrcArr;
-            //array with all the src/url of all possible images for this class
 
         //itemClass: player, enemy, bullet,....
         this.itemClass  = itemClass;
@@ -187,20 +179,17 @@ class GameItem {
     moveUp(){
         if(this.posY + this.height < 100){
         this.posY++;
-        // //try for transitions....
-        // this.domElement.style.transition = "bottom 2s linear";
         this.domElement.style.bottom = this.posY + "vh";
         }
     }
     moveRight(){
         if(this.posX + this.width < 70){
-            //why 70 works??
         this.posX++;
         this.domElement.style.left = this.posX + "vw";
         }  
     }
     moveDown(){
-        //free to get outside viewpoport, player adds a condition so he can't
+        //free to get outside viewpoport, playerClass adds a condition so he can't
         this.posY--;
         this.domElement.style.bottom = this.posY + "vh";
     }
