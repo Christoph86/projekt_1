@@ -16,6 +16,11 @@ class Game {
     }
 
     startGame(){
+
+        // const newTitle = document.createElement("h1");
+        // newTitle.className = "test"
+        // newTitle.innerHTML = "Snowmen Invasion"
+        // document.querySelector("body").prepend(newTitle)
         
         //initialize Game Vars, add Listeners
         this.backgroundMassiveItemAImageSrcArr = [
@@ -23,7 +28,7 @@ class Game {
         this.backgroundItemImageSrcArr = [
             `./img/deco1.png`, `./img/deco2.png`, `./img/deco3.png`, `./img/deco4.png`, `./img/deco5.png`, `./img/deco6.png`, `./img/deco7.png`, `./img/deco8.png`];
         this.playerImgSrcArr = [
-            `./img/player_pacman_ghost.png`,`./img/player_pacman_ghost1.png`,`./img/player_pacman_ghost2.png`];
+            `./img/player_pacman_ghost1.png`,`./img/player_pacman_ghost2.png`,`./img/player_pacman_ghost3.png`];
 
         this.player = new Player(this.playerImgSrcArr);
         this.labelHealthPoints = new Label(null,null,null,null,"label healthPoints");
@@ -31,6 +36,9 @@ class Game {
         this.movingBackgroundArr.push(new MovingBackground);
             //need a instance to use .height for counter to create further slices/rows by timer
             //will fix itself even if you use an other height in the interfal(), when this [0]
+
+
+
 
         this.addEventListeners();
 
@@ -261,7 +269,7 @@ class Enemy extends GameItem {
 
 class Bullet extends GameItem {
     constructor(
-        width=1,
+        width=2,
         height=1,
         posX=null,
         posY=null,

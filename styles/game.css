@@ -19,9 +19,21 @@ massiveBackgroundItems =  29 //will block Players movement
 // highscore other stats, 
 //start, pause menue 30+ */
 
+/* h1 {
+    display:contents;
+    text-align: center;
+    color: aqua;
+    font-size: 10vh;
+    margin-bottom: -100px;
+    padding-bottom: -100px;
+    margin: 0px !important;
+    padding: 0px;
+} */
+
 body {
     z-index: 0;
-    background-image: url(../img/ice_background.jpg);
+    background-image: url(../img/ice_background7.jpg);
+    background-size:100vw 105vh;
     overflow: hidden;
 }
 
@@ -84,7 +96,7 @@ body {
 .bullet img {
     z-index: 21;
     position: absolute;
-    width: inherit;
+    width: 2vw;
     height: auto; /*to keep original aspect (only the upper end is necessary for the collision*/
 }
 
