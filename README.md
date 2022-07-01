@@ -13,6 +13,11 @@ invading your home !
 - avoid the trees, they will push you down!
 
 
+## Demo
+
+[try it by yourself!](https://christoph86.github.io/snowmen-invasion/)
+
+
 
 #### Usage/DevNotes:
 - all js code kept Vanilla, no extra html files
